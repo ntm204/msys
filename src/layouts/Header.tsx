@@ -172,11 +172,15 @@ const BellModal = memo(
   }: any) => {
     const { t } = useTranslation();
     return (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/10">
+      <div
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/10"
+        onClick={onClose}
+      >
         <div
           className={`bg-white rounded-xl shadow-2xl w-[600px] min-h-[520px] flex flex-col ${
             isClosing ? "animate-bell-modal-out" : "animate-bell-modal-in"
           }`}
+          onClick={(e) => e.stopPropagation()}
         >
           <div className="relative flex flex-col bg-white rounded-xl">
             <div className="flex items-center h-[50px] px-6 relative">
@@ -375,7 +379,7 @@ const Header: React.FC = () => {
             />
           )}
           {state.showDropdown && state.isMounted && (
-            <div className="absolute right-0 mt-2 w-40 bg-white rounded shadow-lg z-20 animate-slide-down">
+            <div className="absolute right-0 mt-2 w-40 bg-gray-100 rounded shadow-lg z-[101] animate-slide-down">
               {LANGUAGES.map((lang, idx) => (
                 <React.Fragment key={lang.key}>
                   {idx > 0 && <div className="border-t border-gray-200" />}
