@@ -39,3 +39,47 @@ body {
 .animate-slide-down {
   animation: slide-down 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+@keyframes slide-up {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transform-origin: top left;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-32px) scale(0.7);
+    transform-origin: top left;
+  }
+}
+.animate-slide-up {
+  animation: slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes bell-modal-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-32px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.animate-bell-modal-in {
+  animation: bell-modal-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes bell-modal-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(32px) scale(0.95);
+  }
+}
+.animate-bell-modal-out {
+  animation: bell-modal-out 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
