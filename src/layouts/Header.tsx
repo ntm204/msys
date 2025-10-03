@@ -32,6 +32,9 @@ import FullPageModal from "@/components/FullPageModal";
 import PriceBoard from "@/components/market/PriceBoard";
 import OrderManage from "@/components/order/OrderManage";
 import PlaceOrder from "@/components/order/PlaceOrder";
+import AccountDetail from "@/components/account/AccountDetail";
+import OpenPositions from "@/components/account/OpenPositions";
+import SettlePosition from "@/components/account/SettlePosition";
 
 // Constants
 const LANGUAGES = [
@@ -87,6 +90,15 @@ const TAB_CONFIG: Record<
   "price-board": { label: "Bảng giá", component: <PriceBoard /> },
   "order-manage": { label: "Quản lý đặt lệnh", component: <OrderManage /> },
   "place-order": { label: "Đặt lệnh", component: <PlaceOrder /> },
+  "account-detail": {
+    label: "Chi tiết tài khoản",
+    component: <AccountDetail />,
+  },
+  "open-positions": { label: "Trạng thái mở", component: <OpenPositions /> },
+  "settle-position": {
+    label: "Trạng thái tất toán",
+    component: <SettlePosition />,
+  },
 };
 
 // Memoized Components
@@ -273,7 +285,7 @@ const Header: React.FC = () => {
         showModal: newTabs.length > 0,
       };
     });
-  }, []); // Giờ có thể để rỗng an toàn
+  }, []);
 
   const handleSubmenuClick = useCallback(
     (label: string) => {
@@ -281,6 +293,9 @@ const Header: React.FC = () => {
       if (label === "Bảng giá") tabKey = "price-board";
       if (label === "Quản lý đặt lệnh") tabKey = "order-manage";
       if (label === "Đặt lệnh") tabKey = "place-order";
+      if (label === "Chi tiết tài khoản") tabKey = "account-detail";
+      if (label === "Trạng thái mở") tabKey = "open-positions";
+      if (label === "Trạng thái tất toán") tabKey = "settle-position";
       if (tabKey) {
         setState((prevState) => ({
           ...prevState,
@@ -338,10 +353,46 @@ const Header: React.FC = () => {
         LANGUAGES.find((l) => l.key === saved) || LANGUAGES[1];
       updateState({ currentLang: selectedLang });
       i18n.changeLanguage(selectedLang.key);
+
+      const savedTabs = localStorage.getItem("modalTabs");
+      const savedActiveTab = localStorage.getItem("activeModalTab");
+      let modalTabs: Array<{ key: string; label: string }> = [];
+      if (savedTabs) {
+        try {
+          const parsedTabs = JSON.parse(savedTabs);
+          modalTabs = Array.isArray(parsedTabs)
+            ? parsedTabs.map((tab: any) => ({
+                key: tab.key,
+                label: t(`Header.${TAB_CONFIG[tab.key]?.label || tab.key}`),
+              }))
+            : [];
+        } catch {}
+      }
+      updateState({
+        modalTabs,
+        activeModalTab: savedActiveTab || "",
+        showModal: modalTabs.length > 0,
+      });
     }
-    // Expose handleCloseTab to window với dependency
     (window as any).onCloseTab = handleCloseTab;
   }, [handleCloseTab, i18n]);
+
+  useEffect(() => {
+    if (state.isMounted) {
+      localStorage.setItem("modalTabs", JSON.stringify(state.modalTabs));
+      localStorage.setItem("activeModalTab", state.activeModalTab);
+    }
+  }, [state.modalTabs, state.activeModalTab, state.isMounted]);
+
+  useEffect(() => {
+    setState((prevState) => ({
+      ...prevState,
+      modalTabs: prevState.modalTabs.map((tab) => ({
+        key: tab.key,
+        label: t(`Header.${TAB_CONFIG[tab.key]?.label || tab.key}`),
+      })),
+    }));
+  }, [i18n.language]);
 
   return (
     <header className="h-[50px] bg-gray-100 shadow-lg flex items-center px-6 relative z-10 justify-between">
@@ -359,6 +410,12 @@ const Header: React.FC = () => {
         }}
       >
         <FiMenu size={24} className="text-gray-700 cursor-pointer" />
+        <span
+          className="ml-5 text-xl font-mono font-bold tracking-wide text-gray-800 select-none"
+          style={{ letterSpacing: "0.08em" }}
+        >
+          MSYSTEM
+        </span>
         {state.showMegaMenu && (
           <MegaMenu
             onSubmenuClick={handleSubmenuClick}

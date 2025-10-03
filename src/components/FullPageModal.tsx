@@ -52,6 +52,7 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
               </span>
               <button
                 className="ml-4 rounded-sm border-none bg-transparent p-0 cursor-pointer"
+                aria-label="Đóng tab"
                 onClick={(e) => {
                   e.stopPropagation();
                   // Chỉ còn 1 tab thì đóng cả modal
@@ -82,6 +83,7 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
         </div>
         <button
           className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-[22px] text-[#888]"
+          aria-label="Đóng modal"
           onClick={onClose}
         >
           <FiX size={22} className="font-bold" />

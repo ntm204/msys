@@ -32,5 +32,14 @@
   },
   "PriceBoard": {
     "Bảng giá": "Price Board"
+  },
+  "AccountDetail": {
+    "Chi tiết tài khoản": "Account Details"
+  },
+  "OpenPositions": {
+    "Trạng thái mở": "Open Status"
+  },
+  "SettlePosition": {
+    "Trạng thái tất toán": "Settlement Status"
   }
 }
