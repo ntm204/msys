@@ -1,9 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const PriceBoard: React.FC = () => {
-  return (
-    <div>t1</div>
-  );
+  const { t } = useTranslation();
+  return <div>{t("PriceBoard.Bảng giá")}</div>;
 };
 
 export default PriceBoard;

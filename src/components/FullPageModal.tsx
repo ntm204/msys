@@ -31,43 +31,55 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
       }}
     >
       {/* Modal Header: Tabs + Close */}
-      <div className="relative flex items-center rounded-none bg-[#e3e8ef] h-[30px] min-h-[30px] max-h-[30px]">
+      <div className="relative flex items-center rounded-none bg-gray-100 h-[30px] min-h-[30px] max-h-[30px]">
         <div className="flex items-center h-full">
           {tabs.map((tab) => (
             <div
               key={tab.key}
-              className={`flex items-center h-full cursor-pointer rounded-none px-2 py-0 mr-1 min-h-[30px] text-[15px] font-medium text-[#888] ${
-                activeTab === tab.key
-                  ? "bg-white border-t-2 border-t-[#39ff14]"
-                  : "bg-[#e3e8ef] border-t-transparent"
+              className={`flex items-center h-full cursor-pointer rounded-none px-2 py-0 min-h-[30px] text-[15px] font-medium text-[#888] ${
+                activeTab === tab.key ? "bg-white" : "bg-gray-100"
               }`}
               onClick={() => onTabChange(tab.key)}
             >
-              <span className="pr-1 text-[#888]">{tab.label}</span>
+              <span
+                className={
+                  activeTab === tab.key
+                    ? "text-[#222] font-medium"
+                    : "text-[#888] font-medium"
+                }
+              >
+                {tab.label}
+              </span>
               <button
-                className="ml-1 flex h-[22px] w-[22px] cursor-pointer items-center justify-center rounded-sm border-none bg-transparent p-0 text-[#888]"
+                className="ml-4 rounded-sm border-none bg-transparent p-0 cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  // Đóng tab: nếu còn nhiều tab thì chỉ đóng tab đó, nếu là tab cuối thì đóng modal
-                  if (tabs.length > 1) {
+                  // Chỉ còn 1 tab thì đóng cả modal
+                  if (tabs.length === 1) {
+                    onClose();
+                  } else {
+                    // Còn nhiều hơn 1 tab thì chỉ đóng tab này
                     if (typeof window !== "undefined") {
-                      // Nếu có hàm onCloseTab thì gọi
                       if (typeof (window as any).onCloseTab === "function") {
                         (window as any).onCloseTab(tab.key);
                       }
                     }
-                  } else {
-                    onClose();
                   }
                 }}
                 tabIndex={-1}
               >
-                <FiX size={16} className="font-bold text-[#888]" />
+                <FiX
+                  size={16}
+                  className={
+                    activeTab === tab.key
+                      ? "font-bold text-[#222]"
+                      : "font-bold text-[#888]"
+                  }
+                />
               </button>
             </div>
           ))}
         </div>
-        {/* Close modal button căn giữa header modal */}
         <button
           className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-[22px] text-[#888]"
           onClick={onClose}
@@ -75,7 +87,6 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
           <FiX size={22} className="font-bold" />
         </button>
       </div>
-      {/* Modal Content: cách header 5px, không bo góc */}
       <div className="flex-1 overflow-auto bg-white rounded-none mt-[5px]">
         {children}
       </div>

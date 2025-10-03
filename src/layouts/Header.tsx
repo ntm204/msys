@@ -30,6 +30,8 @@ import {
 } from "react-icons/fi";
 import FullPageModal from "@/components/FullPageModal";
 import PriceBoard from "@/components/market/PriceBoard";
+import OrderManage from "@/components/order/OrderManage";
+import PlaceOrder from "@/components/order/PlaceOrder";
 
 // Constants
 const LANGUAGES = [
@@ -83,6 +85,8 @@ const TAB_CONFIG: Record<
   { label: string; component: React.ReactNode }
 > = {
   "price-board": { label: "Bảng giá", component: <PriceBoard /> },
+  "order-manage": { label: "Quản lý đặt lệnh", component: <OrderManage /> },
+  "place-order": { label: "Đặt lệnh", component: <PlaceOrder /> },
 };
 
 // Memoized Components
@@ -99,7 +103,7 @@ const MenuItem = memo(({ icon: Icon, label, onSubmenuClick }: any) => {
       onMouseLeave={() => setHovered(false)}
     >
       <Icon size={16} />
-      <span className="flex-1 text-base">{t(label)}</span>
+      <span className="flex-1 text-base">{t(`Header.${label}`)}</span>
       {showArrow && (
         <FiChevronRight size={16} className="group-hover:text-blue-600" />
       )}
@@ -115,7 +119,7 @@ const MenuItem = memo(({ icon: Icon, label, onSubmenuClick }: any) => {
               onClick={() => onSubmenuClick?.(sub.label)}
             >
               {sub.icon && <sub.icon size={16} />}
-              <span>{t(sub.label)}</span>
+              <span>{t(`Header.${sub.label}`)}</span>
             </div>
           ))}
         </div>
@@ -177,7 +181,7 @@ const BellModal = memo(
         onClick={onClose}
       >
         <div
-          className={`bg-white rounded-xl shadow-2xl w-[600px] min-h-[520px] flex flex-col ${
+          className={`bg-white rounded-xl shadow-2xl w-[500px] min-h-[520px] flex flex-col ${
             isClosing ? "animate-bell-modal-out" : "animate-bell-modal-in"
           }`}
           onClick={(e) => e.stopPropagation()}
@@ -185,7 +189,7 @@ const BellModal = memo(
           <div className="relative flex flex-col bg-white rounded-xl">
             <div className="flex items-center h-[50px] px-6 relative">
               <span className="text-lg font-bold text-black">
-                {t("Thông báo")}
+                {t("Header.Thông báo")}
               </span>
               <button
                 className="absolute right-4 flex items-center justify-center w-8 h-8 rounded-md text-[#888]"
@@ -205,12 +209,12 @@ const BellModal = memo(
                   ref={(el) => {
                     tabRefs.current[idx] = el;
                   }}
-                  className={`text-base font-medium px-4 py-2 transition-colors ${
-                    activeTab === idx ? "text-blue-600" : "text-gray-700"
+                  className={`text-base font-light px-4 py-2 transition-colors cursor-pointer ${
+                    activeTab === idx ? "text-blue-600" : "text-gray-500"
                   }`}
                   onClick={() => onTabChange(idx)}
                 >
-                  {t(tab)}
+                  {t(`Header.${tab}`)}
                 </button>
               ))}
               <span
@@ -232,7 +236,7 @@ BellModal.displayName = "BellModal";
 
 // Main Component
 const Header: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [state, setState] = useState({
     showDropdown: false,
     showModal: false,
@@ -255,39 +259,48 @@ const Header: React.FC = () => {
   const updateState = (updates: Partial<typeof state>) =>
     setState((prev) => ({ ...prev, ...updates }));
 
+  // Sử dụng functional update để tránh stale closure
+  const handleCloseTab = useCallback((key: string) => {
+    setState((prevState) => {
+      const newTabs = prevState.modalTabs.filter((t) => t.key !== key);
+      return {
+        ...prevState,
+        modalTabs: newTabs,
+        activeModalTab:
+          prevState.activeModalTab === key
+            ? newTabs[newTabs.length - 1]?.key || ""
+            : prevState.activeModalTab,
+        showModal: newTabs.length > 0,
+      };
+    });
+  }, []); // Giờ có thể để rỗng an toàn
+
   const handleSubmenuClick = useCallback(
     (label: string) => {
-      if (label === "Bảng giá") {
-        updateState({
-          modalTabs: state.modalTabs.find((t) => t.key === "price-board")
-            ? state.modalTabs
-            : [...state.modalTabs, { key: "price-board", label: "Bảng giá" }],
-          activeModalTab: "price-board",
+      let tabKey = "";
+      if (label === "Bảng giá") tabKey = "price-board";
+      if (label === "Quản lý đặt lệnh") tabKey = "order-manage";
+      if (label === "Đặt lệnh") tabKey = "place-order";
+      if (tabKey) {
+        setState((prevState) => ({
+          ...prevState,
+          modalTabs: prevState.modalTabs.find((t) => t.key === tabKey)
+            ? prevState.modalTabs
+            : [
+                ...prevState.modalTabs,
+                { key: tabKey, label: t(`Header.${TAB_CONFIG[tabKey].label}`) },
+              ],
+          activeModalTab: tabKey,
           showModal: true,
           isMegaMenuClosing: true,
-        });
+        }));
         setTimeout(
           () => updateState({ showMegaMenu: false, isMegaMenuClosing: false }),
           300
         );
       }
     },
-    [state.modalTabs]
-  );
-
-  const handleCloseTab = useCallback(
-    (key: string) => {
-      const newTabs = state.modalTabs.filter((t) => t.key !== key);
-      updateState({
-        modalTabs: newTabs,
-        activeModalTab:
-          state.activeModalTab === key
-            ? newTabs[newTabs.length - 1]?.key || ""
-            : state.activeModalTab,
-        showModal: newTabs.length > 0,
-      });
-    },
-    [state.modalTabs, state.activeModalTab]
+    [t]
   );
 
   useEffect(() => {
@@ -324,14 +337,14 @@ const Header: React.FC = () => {
       const selectedLang =
         LANGUAGES.find((l) => l.key === saved) || LANGUAGES[1];
       updateState({ currentLang: selectedLang });
-      i18n.changeLanguage(selectedLang.key); // Đảm bảo đổi ngôn ngữ khi khởi động
+      i18n.changeLanguage(selectedLang.key);
     }
-    // Expose handleCloseTab to window
+    // Expose handleCloseTab to window với dependency
     (window as any).onCloseTab = handleCloseTab;
-  }, []);
+  }, [handleCloseTab, i18n]);
 
   return (
-    <header className="h-[50px] bg-white shadow-lg flex items-center px-6 relative z-10 justify-between">
+    <header className="h-[50px] bg-gray-100 shadow-lg flex items-center px-6 relative z-10 justify-between">
       <div
         className="flex items-center relative"
         onMouseEnter={() => {
@@ -388,7 +401,7 @@ const Header: React.FC = () => {
                     onClick={() => {
                       updateState({ currentLang: lang, showDropdown: false });
                       localStorage.setItem("selectedLang", lang.key);
-                      i18n.changeLanguage(lang.key); // Đổi ngôn ngữ khi click
+                      i18n.changeLanguage(lang.key);
                     }}
                   >
                     <img src={lang.icon} alt={lang.label} className="w-6 h-6" />
