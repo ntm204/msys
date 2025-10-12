@@ -21,7 +21,7 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
 }) => {
   return (
     <div
-      className="fixed left-0 right-0 z-50 flex flex-col bg-white shadow-xl rounded-none min-w-screen"
+      className="fixed left-0 right-0 z-50 flex flex-col bg-white dark:bg-gray-800 shadow-xl rounded-none min-w-screen"
       style={{
         top: HEADER_HEIGHT + MODAL_HEADER_OFFSET,
         bottom: 10,
@@ -31,21 +31,21 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
       }}
     >
       {/* Modal Header: Tabs + Close */}
-      <div className="relative flex items-center rounded-none bg-gray-100 h-[30px] min-h-[30px] max-h-[30px]">
+      <div className="relative flex items-center rounded-none bg-gray-100 dark:bg-gray-700 h-[30px] min-h-[30px] max-h-[30px]">
         <div className="flex items-center h-full">
           {tabs.map((tab) => (
             <div
               key={tab.key}
-              className={`flex items-center h-full cursor-pointer rounded-none px-2 py-0 min-h-[30px] text-[15px] font-medium text-[#888] ${
-                activeTab === tab.key ? "bg-white" : "bg-gray-100"
+              className={`flex items-center h-full cursor-pointer rounded-none px-2 py-0 min-h-[30px] text-[15px] font-medium text-gray-500 dark:text-gray-400 ${
+                activeTab === tab.key ? "bg-white dark:bg-gray-800" : "bg-gray-100 dark:bg-gray-700"
               }`}
               onClick={() => onTabChange(tab.key)}
             >
               <span
                 className={
                   activeTab === tab.key
-                    ? "text-[#222] font-medium"
-                    : "text-[#888] font-medium"
+                    ? "text-gray-900 dark:text-gray-100 font-medium"
+                    : "text-gray-500 dark:text-gray-400 font-medium"
                 }
               >
                 {tab.label}
@@ -73,8 +73,8 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
                   size={16}
                   className={
                     activeTab === tab.key
-                      ? "font-bold text-[#222]"
-                      : "font-bold text-[#888]"
+                      ? "font-bold text-gray-900 dark:text-gray-100"
+                      : "font-bold text-gray-500 dark:text-gray-400"
                   }
                 />
               </button>
@@ -82,14 +82,14 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
           ))}
         </div>
         <button
-          className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-[22px] text-[#888]"
+          className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-[22px] text-gray-500 dark:text-gray-400"
           aria-label="Đóng modal"
           onClick={onClose}
         >
           <FiX size={22} className="font-bold" />
         </button>
       </div>
-      <div className="flex-1 overflow-auto bg-white rounded-none mt-[5px]">
+      <div className="flex-1 overflow-auto bg-white dark:bg-gray-800 rounded-none mt-[5px]">
         {children}
       </div>
     </div>

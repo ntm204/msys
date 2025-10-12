@@ -421,7 +421,15 @@ const Header: React.FC = () => {
   }, [i18n.language]);
 
   return (
-    <header className={`h-[50px] ${mounted && theme === "dark" ? 'bg-gray-800' : 'bg-gray-100'} shadow-lg flex items-center px-6 relative z-10 justify-between`}>
+    <header
+      className={`h-[50px] flex items-center px-6 relative z-10 justify-between`}
+      style={{
+        backgroundColor: theme === "dark" ? '#1F2330' : '#f5f5f5',
+        boxShadow: theme === "dark" 
+          ? '0 0 15px 2px #454870' 
+          : '0 0 15px 2px #758696'
+      }}
+    >
       <div
         className="flex items-center relative"
         onMouseEnter={() => {
