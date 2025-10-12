@@ -128,7 +128,7 @@ const MenuItem = memo(({ icon: Icon, label, onSubmenuClick, theme }: any) => {
           {SUBMENU_ITEMS[label].map((sub) => (
             <div
               key={sub.label}
-              className="flex items-center px-2 py-2 gap-2 text-gray-700 hover:text-blue-600 cursor-pointer transition-colors text-sm rounded-lg"
+              className="flex items-center px-2 py-2 gap-2 text-gray-700 hover:text-blue-600 cursor-pointer transition-colors text-sm rounded-sm"
               onClick={() => onSubmenuClick?.(sub.label)}
             >
               {sub.icon && <sub.icon size={16} />}
@@ -145,7 +145,7 @@ MenuItem.displayName = "MenuItem";
 
 const MegaMenu = memo(({ onSubmenuClick, isClosing, theme }: any) => (
   <div
-    className={`absolute left-[-8px] top-[48px] w-[290px] bg-white rounded-lg shadow-xl z-[999] ${
+    className={`absolute left-[-8px] top-[48px] w-[290px] bg-white rounded-sm shadow-xl z-[999] ${
       isClosing ? "animate-slide-up" : "animate-slide-down"
     }`}
   >
@@ -198,12 +198,12 @@ const BellModal = memo(
         onClick={onClose}
       >
         <div
-          className={`bg-white rounded-xl shadow-2xl w-[500px] min-h-[520px] flex flex-col ${
+          className={`bg-white rounded-sm shadow-2xl w-[500px] min-h-[520px] flex flex-col ${
             isClosing ? "animate-bell-modal-out" : "animate-bell-modal-in"
           }`}
           onClick={(e: React.MouseEvent) => e.stopPropagation()}
         >
-          <div className="relative flex flex-col bg-white rounded-xl">
+          <div className="relative flex flex-col bg-white rounded-sm">
             <div className="flex items-center h-[50px] px-6 relative">
               <span className="text-lg font-bold text-black">
                 {t("Header.Thông báo")}
@@ -237,13 +237,14 @@ const BellModal = memo(
                 </button>
               ))}
               <span
-                className="absolute bottom-0 h-[2px] bg-blue-500 transition-all duration-300"
+                className="absolute bottom-0 h-[1.5px] bg-blue-500 transition-all duration-300"
                 style={{
                   left: `${indicatorStyle.left}px`,
                   width: `${indicatorStyle.width}px`,
                 }}
               />
             </div>
+            <div className="border-t border-gray-200 w-full" />
           </div>
           <div className="flex-1 p-6 bg-white rounded-xl" />
         </div>
@@ -424,9 +425,9 @@ const Header: React.FC = () => {
     <header
       className={`h-[50px] flex items-center px-6 relative z-10 justify-between`}
       style={{
-        backgroundColor: theme === "dark" ? '#1F2330' : '#f5f5f5',
-        boxShadow: theme === "dark" 
-          ? '0 0 15px 2px #454870' 
+        backgroundColor: mounted && theme === "dark" ? '#1F2330' : '#f5f5f5',
+        boxShadow: mounted && theme === "dark"
+          ? '0 0 15px 2px #454870'
           : '0 0 15px 2px #758696'
       }}
     >
@@ -484,7 +485,7 @@ const Header: React.FC = () => {
             />
           )}
           {state.showDropdown && state.isMounted && (
-            <div className="absolute right-0 mt-2 w-40 bg-white rounded shadow-lg z-[101] animate-slide-down">
+            <div className="absolute right-0 mt-2 w-40 bg-white rounded-sm shadow-lg z-[101] animate-slide-down">
               {LANGUAGES.map((lang, idx) => (
                 <React.Fragment key={lang.key}>
                   {idx > 0 && <div className="border-t border-gray-200" />}
