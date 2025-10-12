@@ -1,0 +1,45 @@
+{
+  "Header": {
+    "Thị trường": "Market",
+    "Quản lý đặt lệnh": "Order Management",
+    "Quản lý tài khoản": "Account Management",
+    "Giao diện": "Interface",
+    "Kích thước": "Size",
+    "Đặt lại giao diện": "Reset Interface",
+    "Báo cáo": "Report",
+    "Bảng giá": "Price Board",
+    "Đặt lệnh": "Place Order",
+    "Quản lý đặt lệnh (submenu)": "Order Management (submenu)",
+    "Trạng thái mở": "Open Status",
+    "Trạng thái tất toán": "Settlement Status",
+    "Chi tiết tài khoản": "Account Details",
+    "Giao diện sáng": "Light Mode",
+    "Giao diện tối": "Dark Mode",
+    "Nhỏ": "Small",
+    "Trung bình": "Medium",
+    "Lớn": "Large",
+    "Báo cáo giao dịch": "Transaction Report",
+    "Báo cáo lịch sử nộp rút tiền": "Deposit/Withdrawal History Report",
+    "Báo cáo sao kê khách hàng": "Customer Statement Report",
+    "Thông báo": "Notification",
+    "Lệnh/Giao dịch": "Order/Transaction",
+    "Quản trị": "Administration",
+    "Hệ thống": "System"
+  },
+  "Order": {
+    "Quản lý đặt lệnh": "Order Management",
+    "Đặt lệnh": "Place Order"
+  },
+  "PriceBoard": {
+    "Bảng giá": "Price Board"
+  },
+  "AccountDetail": {
+    "Chi tiết tài khoản": "Account Details"
+  },
+  "OpenPositions": {
+    "Trạng thái mở": "Open Status"
+  },
+  "SettlePosition": {
+    "Trạng thái tất toán": "Settlement Status"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "Header": {
+    "Thị trường": "Thị trường",
+    "Quản lý đặt lệnh": "Quản lý đặt lệnh",
+    "Quản lý tài khoản": "Quản lý tài khoản",
+    "Giao diện": "Giao diện",
+    "Kích thước": "Kích thước",
+    "Đặt lại giao diện": "Đặt lại giao diện",
+    "Báo cáo": "Báo cáo",
+    "Bảng giá": "Bảng giá",
+    "Đặt lệnh": "Đặt lệnh",
+    "Quản lý đặt lệnh (submenu)": "Quản lý đặt lệnh",
+    "Trạng thái mở": "Trạng thái mở",
+    "Trạng thái tất toán": "Trạng thái tất toán",
+    "Chi tiết tài khoản": "Chi tiết tài khoản",
+    "Giao diện sáng": "Giao diện sáng",
+    "Giao diện tối": "Giao diện tối",
+    "Nhỏ": "Nhỏ",
+    "Trung bình": "Trung bình",
+    "Lớn": "Lớn",
+    "Báo cáo giao dịch": "Báo cáo giao dịch",
+    "Báo cáo lịch sử nộp rút tiền": "Báo cáo lịch sử nộp rút tiền",
+    "Báo cáo sao kê khách hàng": "Báo cáo sao kê khách hàng",
+    "Thông báo": "Thông báo",
+    "Lệnh/Giao dịch": "Lệnh/Giao dịch",
+    "Quản trị": "Quản trị",
+    "Hệ thống": "Hệ thống"
+  },
+  "Order": {
+    "Quản lý đặt lệnh": "Quản lý đặt lệnh",
+    "Đặt lệnh": "Đặt lệnh"
+  },
+  "PriceBoard": {
+    "Bảng giá": "Bảng giá"
+  },
+  "AccountDetail": {
+    "Chi tiết tài khoản": "Chi tiết tài khoản"
+  },
+  "OpenPositions": {
+    "Trạng thái mở": "Trạng thái mở"
+  },
+  "SettlePosition": {
+    "Trạng thái tất toán": "Trạng thái tất toán"
+  }
+}

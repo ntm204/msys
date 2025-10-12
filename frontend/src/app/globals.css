@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --secondary: #6b7280;
+  --secondary-hover: #4b5563;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --border: #e5e7eb;
+  --card: #ffffff;
+  --card-foreground: #f9fafb;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --input: #ffffff;
+  --input-border: #d1d5db;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --primary: #3b82f6;
+  --primary-hover: #60a5fa;
+  --secondary: #94a3b8;
+  --secondary-hover: #cbd5e1;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --border: #334155;
+  --card: #1e293b;
+  --card-foreground: #0f172a;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --input: #1e293b;
+  --input-border: #334155;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Animations used by Header component */
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slide-down {
+  animation: slide-down 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slide-up {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transform-origin: top left;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-32px) scale(0.7);
+    transform-origin: top left;
+  }
+}
+.animate-slide-up {
+  animation: slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes bell-modal-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-32px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.animate-bell-modal-in {
+  animation: bell-modal-in 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes bell-modal-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(32px) scale(0.95);
+  }
+}
+.animate-bell-modal-out {
+  animation: bell-modal-out 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}

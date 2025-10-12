@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200">
+  <!-- Nền xanh -->
+  <rect width="300" height="200" fill="#012169"/>
+
+  <!-- Chéo trắng -->
+  <polygon points="0,0 35,0 300,165 300,200 265,200 0,35" fill="#FFFFFF"/>
+  <polygon points="300,0 265,0 0,165 0,200 35,200 300,35" fill="#FFFFFF"/>
+
+  <!-- Chéo đỏ -->
+  <polygon points="0,0 15,0 300,185 300,200 285,200 0,15" fill="#C8102E"/>
+  <polygon points="300,0 285,0 0,185 0,200 15,200 300,15" fill="#C8102E"/>
+
+  <!-- Thanh ngang trắng -->
+  <rect x="0" y="80" width="300" height="40" fill="#FFFFFF"/>
+  <!-- Thanh dọc trắng -->
+  <rect x="130" y="0" width="40" height="200" fill="#FFFFFF"/>
+
+  <!-- Thanh ngang đỏ -->
+  <rect x="0" y="90" width="300" height="20" fill="#C8102E"/>
+  <!-- Thanh dọc đỏ -->
+  <rect x="140" y="0" width="20" height="200" fill="#C8102E"/>
+</svg>
