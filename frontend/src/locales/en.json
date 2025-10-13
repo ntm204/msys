@@ -31,7 +31,25 @@
     "Đặt lệnh": "Place Order"
   },
   "PriceBoard": {
-    "Bảng giá": "Price Board"
+    "Bảng giá": "Price Board",
+    "New tab": "New tab",
+    "Add new tab": "Add new tab",
+    "Enter contract code...": "Enter contract code...",
+    "Edit tab name": "Edit tab name",
+    "Delete tab": "Delete tab",
+    "Export CSV": "Export CSV",
+    "No tabs created yet": "No tabs created yet",
+    "Press + to create first tab": "Press + to create first tab",
+    "Price board content will be displayed here": "Price board content will be displayed here",
+    "Rename list": "Rename list",
+    "Enter new list name...": "Enter new list name...",
+    "Cancel": "Cancel",
+    "Save": "Save",
+    "Confirm delete": "Confirm delete",
+    "Are you sure you want to delete this tab?": "Are you sure you want to delete this tab?",
+    "This action cannot be undone.": "This action cannot be undone.",
+    "Yes, delete": "Yes, delete",
+    "No, cancel": "No, cancel"
   },
   "AccountDetail": {
     "Chi tiết tài khoản": "Account Details"

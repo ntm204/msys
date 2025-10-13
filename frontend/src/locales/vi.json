@@ -31,7 +31,25 @@
     "Đặt lệnh": "Đặt lệnh"
   },
   "PriceBoard": {
-    "Bảng giá": "Bảng giá"
+    "Bảng giá": "Bảng giá",
+    "New tab": "Tab mới",
+    "Add new tab": "Thêm tab mới",
+    "Enter contract code...": "Nhập mã hợp đồng...",
+    "Edit tab name": "Sửa tên tab",
+    "Delete tab": "Xóa tab",
+    "Export CSV": "Xuất CSV",
+    "No tabs created yet": "Chưa có tab nào được tạo",
+    "Press + to create first tab": "Nhấn dấu + để tạo tab đầu tiên",
+    "Price board content will be displayed here": "Nội dung bảng giá sẽ hiển thị ở đây",
+    "Rename list": "Đổi tên danh sách",
+    "Enter new list name...": "Nhập tên danh sách mới...",
+    "Cancel": "Hủy",
+    "Save": "Lưu",
+    "Confirm delete": "Xác nhận xóa",
+    "Are you sure you want to delete this tab?": "Bạn có chắc chắn muốn xóa tab này không?",
+    "This action cannot be undone.": "Hành động này không thể hoàn tác.",
+    "Yes, delete": "Có, xóa",
+    "No, cancel": "Không, hủy"
   },
   "AccountDetail": {
     "Chi tiết tài khoản": "Chi tiết tài khoản"

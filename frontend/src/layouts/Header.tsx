@@ -34,6 +34,7 @@ import PlaceOrder from "@/components/order/PlaceOrder";
 import AccountDetail from "@/components/account/AccountDetail";
 import OpenPositions from "@/components/account/OpenPositions";
 import SettlePosition from "@/components/account/SettlePosition";
+import TransactionReport from "@/components/report/TransactionReport";
 import { useTheme } from "next-themes";
 
 // Constants
@@ -269,6 +270,7 @@ const Header: React.FC = () => {
     showModal: false,
     showMegaMenu: false,
     showBellModal: false,
+    showTransactionReport: false,
     isMegaMenuClosing: false,
     isBellModalClosing: false,
     activeTab: 0,
@@ -311,6 +313,16 @@ const Header: React.FC = () => {
       if (label === "Chi tiết tài khoản") tabKey = "account-detail";
       if (label === "Trạng thái mở") tabKey = "open-positions";
       if (label === "Trạng thái tất toán") tabKey = "settle-position";
+
+      // Handle transaction report
+      if (label === "Báo cáo giao dịch") {
+        updateState({ showTransactionReport: true, isMegaMenuClosing: true });
+        setTimeout(
+          () => updateState({ showMegaMenu: false, isMegaMenuClosing: false }),
+          300
+        );
+        return;
+      }
 
       // Theme toggle now handled by direct button only
       // if (label === "Giao diện sáng") {
@@ -536,6 +548,14 @@ const Header: React.FC = () => {
               TAB_CONFIG[state.activeModalTab]?.component}
           </div>
         </FullPageModal>
+      )}
+
+      {state.showTransactionReport && (
+        <TransactionReport
+          isOpen={state.showTransactionReport}
+          onClose={() => updateState({ showTransactionReport: false })}
+          theme={theme || "light"}
+        />
       )}
 
       {state.showBellModal && (
