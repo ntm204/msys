@@ -42,12 +42,12 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
         minHeight: `calc(100vh - ${
           HEADER_HEIGHT + MODAL_HEADER_OFFSET + 10
         }px)`,
-        backgroundColor: isDark ? '#1F2330' : '#ffffff',
+        backgroundColor: isDark ? '#151926' : '#ffffff',
       }}
     >
       {/* Modal Header: Tabs + Close */}
       <div className="relative flex items-center rounded-none h-[30px] min-h-[30px] max-h-[30px]"
-        style={{ backgroundColor: isDark ? '#2D3748' : '#f1f5f9' }}
+        style={{ backgroundColor: isDark ? '#262b3f' : '#f1f5f9' }}
       >
         <div className="flex items-center h-full">
           {tabs.map((tab) => (
@@ -56,7 +56,7 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
               className={`flex items-center h-full cursor-pointer rounded-none px-2 py-0 min-h-[30px] text-[15px] font-medium`}
                 style={{
                   color: activeTab === tab.key ? (isDark ? '#e2e8f0' : '#1a202c') : (isDark ? '#a0aec0' : '#718096'),
-                  backgroundColor: activeTab === tab.key ? (isDark ? '#1F2330' : '#ffffff') : (isDark ? '#2D3748' : '#f1f5f9')
+                  backgroundColor: activeTab === tab.key ? (isDark ? '#151926' : '#ffffff') : (isDark ? '#262b3f' : '#f1f5f9')
                 }}
               onClick={() => onTabChange(tab.key)}
             >
@@ -88,7 +88,7 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
                 tabIndex={-1}
               >
                 <FiX
-                  size={16}
+                  size={14}
                   className="font-bold"
                   style={{
                     color: activeTab === tab.key ? (isDark ? '#e2e8f0' : '#1a202c') : (isDark ? '#a0aec0' : '#718096')
@@ -108,7 +108,7 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
         </button>
       </div>
       <div className="flex-1 overflow-auto rounded-none mt-[5px]"
-        style={{ backgroundColor: isDark ? '#1F2330' : '#ffffff' }}
+        style={{ backgroundColor: isDark ? '#151926' : '#ffffff' }}
       >
         {children}
       </div>

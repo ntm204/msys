@@ -114,10 +114,10 @@ const MenuItem = memo(({ icon: Icon, label, onSubmenuClick, theme }: any) => {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <Icon size={16} />
+      <Icon size={14} />
       <span className="flex-1 text-base">{t(`Header.${label}`)}</span>
       {showArrow && (
-        <FiChevronRight size={16} className="group-hover:text-blue-600" />
+        <FiChevronRight size={14} className="group-hover:text-blue-600" />
       )}
       {hasSubmenu && hovered && showArrow && (
         <div
@@ -130,7 +130,7 @@ const MenuItem = memo(({ icon: Icon, label, onSubmenuClick, theme }: any) => {
               className="flex items-center px-2 py-2 gap-2 text-gray-700 hover:text-blue-600 cursor-pointer transition-colors text-sm rounded-sm"
               onClick={() => onSubmenuClick?.(sub.label)}
             >
-              {sub.icon && <sub.icon size={16} />}
+              {sub.icon && <sub.icon size={14} />}
               <span>{t(`Header.${sub.label}`)}</span>
             </div>
           ))}
@@ -208,10 +208,10 @@ const BellModal = memo(
                 {t("Header.Thông báo")}
               </span>
               <button
-                className="absolute right-4 flex items-center justify-center w-8 h-8 rounded-md text-[#888]"
+                className="absolute right-4 flex items-center justify-center w-8 h-8 rounded-md text-[#888] cursor-pointer"
                 onClick={onClose}
               >
-                <FiX size={22} className="cursor-pointer" />
+                <FiX size={20} className="font-bold" />
               </button>
             </div>
             <div className="border-t border-gray-200 w-full" />
@@ -422,7 +422,7 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className={`h-[50px] flex items-center px-6 relative z-10 justify-between`}
+      className={`h-[45px] flex items-center px-6 relative z-10 justify-between`}
       style={{
         backgroundColor: mounted && theme === "dark" ? '#1F2330' : '#f5f5f5',
         boxShadow: mounted && theme === "dark"
@@ -443,9 +443,9 @@ const Header: React.FC = () => {
           );
         }}
       >
-        <FiMenu size={24} className={`${mounted && theme === "dark" ? 'text-gray-300' : 'text-gray-700'} cursor-pointer`} />
+        <FiMenu size={22} className={`${mounted && theme === "dark" ? 'text-gray-300' : 'text-gray-700'} cursor-pointer`} />
         <span
-          className={`ml-5 text-xl font-mono font-bold tracking-wide select-none ${mounted && theme === "dark" ? 'text-gray-100' : 'text-gray-800'}`}
+          className={`ml-5 text-lg font-mono font-bold tracking-wide select-none ${mounted && theme === "dark" ? 'text-gray-100' : 'text-gray-800'}`}
           style={{ letterSpacing: "0.08em" }}
         >
           MSYSTEM
@@ -461,7 +461,7 @@ const Header: React.FC = () => {
 
       <div className="flex items-center gap-4">
         <FiBell
-          size={22}
+          size={20}
           className={`${mounted && theme === "dark" ? 'text-gray-300 hover:text-gray-100' : 'text-gray-700 hover:text-gray-900'} cursor-pointer transition-colors`}
           onClick={() =>
             updateState({ showBellModal: true, isBellModalClosing: false })
@@ -469,7 +469,7 @@ const Header: React.FC = () => {
         />
         <span className={`mx-1 ${mounted && theme === "dark" ? 'text-gray-600' : 'text-gray-300'}`}>|</span>
         <FiRefreshCw
-          size={22}
+          size={20}
           className={`${mounted && theme === "dark" ? 'text-gray-300 hover:text-gray-100' : 'text-gray-700 hover:text-gray-900'} cursor-pointer transition-colors`}
         />
         <span className={`mx-1 ${mounted && theme === "dark" ? 'text-gray-600' : 'text-gray-300'}`}>|</span>
@@ -512,12 +512,12 @@ const Header: React.FC = () => {
             className={`${theme === "dark" ? 'text-gray-300 hover:text-gray-100' : 'text-gray-700 hover:text-gray-900'} cursor-pointer transition-colors`}
             title={`Chuyển sang ${theme === "dark" ? 'giao diện sáng' : 'giao diện tối'}`}
           >
-            {theme === "dark" ? <FiSun size={22} /> : <FiMoon size={22} />}
+            {theme === "dark" ? <FiSun size={20} /> : <FiMoon size={20} />}
           </button>
         )}
         <span className={`mx-1 ${mounted && theme === "dark" ? 'text-gray-600' : 'text-gray-300'}`}>|</span>
         <FiUser
-          size={22}
+          size={20}
           className={`${mounted && theme === "dark" ? 'text-gray-300 hover:text-gray-100' : 'text-gray-700 hover:text-gray-900'} cursor-pointer transition-colors`}
         />
       </div>
@@ -531,7 +531,7 @@ const Header: React.FC = () => {
             updateState({ showModal: false, modalTabs: [], activeModalTab: "" })
           }
         >
-          <div className="min-h-[400px] p-4">
+          <div className="min-h-[400px]">
             {state.activeModalTab &&
               TAB_CONFIG[state.activeModalTab]?.component}
           </div>
@@ -544,11 +544,10 @@ const Header: React.FC = () => {
           activeTab={state.activeTab}
           onTabChange={(idx: number) => updateState({ activeTab: idx })}
           onClose={() => {
-            updateState({ isBellModalClosing: true });
+            updateState({ isBellModalClosing: true, showBellModal: false });
             setTimeout(
               () =>
                 updateState({
-                  showBellModal: false,
                   isBellModalClosing: false,
                 }),
               300
