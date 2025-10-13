@@ -12,7 +12,6 @@ import {
   FiGrid,
   FiFileText,
   FiBriefcase,
-  FiCircle,
   FiType,
   FiRotateCcw,
   FiBarChart2,
