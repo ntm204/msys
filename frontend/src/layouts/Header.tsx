@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback, memo } from "react";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 import "../../i18n";
 import {
   FiMenu,
@@ -35,6 +36,8 @@ import AccountDetail from "@/components/account/AccountDetail";
 import OpenPositions from "@/components/account/OpenPositions";
 import SettlePosition from "@/components/account/SettlePosition";
 import TransactionReport from "@/components/report/TransactionReport";
+import DepositWithdrawReport from "@/components/report/DepositWithdrawReport";
+import CustomerStatementReport from "@/components/report/CustomerStatementReport";
 import { useTheme } from "next-themes";
 
 // Constants
@@ -227,9 +230,7 @@ const BellModal = memo(
                     tabRefs.current[idx] = el;
                   }}
                   className={`text-base font-light px-4 py-2 transition-colors cursor-pointer ${
-                    activeTab === idx
-                      ? "text-blue-600"
-                      : "text-gray-500"
+                    activeTab === idx ? "text-blue-600" : "text-gray-500"
                   }`}
                   onClick={() => onTabChange(idx)}
                 >
@@ -261,6 +262,30 @@ const Header: React.FC = () => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
+  const reloadPage = useCallback(() => {
+    // Keep current tabs and settings, just refresh the page
+    toast.success("Đang tải lại trang...");
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  }, []);
+
+  const resetInterface = useCallback(() => {
+    // Clear localStorage data related to interface
+    localStorage.removeItem("modalTabs");
+    localStorage.removeItem("activeModalTab");
+    localStorage.removeItem("selectedLang");
+
+    // Reset theme to default
+    setTheme("light");
+
+    // Show success message before reload
+    toast.success("Đã đặt lại giao diện thành công! Đang tải lại...");
+    setTimeout(() => {
+      window.location.reload();
+    }, 1500);
+  }, [setTheme]);
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -271,6 +296,8 @@ const Header: React.FC = () => {
     showMegaMenu: false,
     showBellModal: false,
     showTransactionReport: false,
+    showDepositWithdrawReport: false,
+    showCustomerStatementReport: false,
     isMegaMenuClosing: false,
     isBellModalClosing: false,
     activeTab: 0,
@@ -324,15 +351,42 @@ const Header: React.FC = () => {
         return;
       }
 
-      // Theme toggle now handled by direct button only
-      // if (label === "Giao diện sáng") {
-      //   setTheme("light");
-      //   return;
-      // }
-      // if (label === "Giao diện tối") {
-      //   setTheme("dark");
-      //   return;
-      // }
+      // Handle deposit/withdraw report
+      if (label === "Báo cáo lịch sử nộp rút tiền") {
+        updateState({
+          showDepositWithdrawReport: true,
+          isMegaMenuClosing: true,
+        });
+        setTimeout(
+          () => updateState({ showMegaMenu: false, isMegaMenuClosing: false }),
+          300
+        );
+        return;
+      }
+
+      // Handle customer statement report
+      if (label === "Báo cáo sao kê khách hàng") {
+        updateState({
+          showCustomerStatementReport: true,
+          isMegaMenuClosing: true,
+        });
+        setTimeout(
+          () => updateState({ showMegaMenu: false, isMegaMenuClosing: false }),
+          300
+        );
+        return;
+      }
+
+      // Handle reset interface
+      if (label === "Đặt lại giao diện") {
+        resetInterface();
+        updateState({ isMegaMenuClosing: true });
+        setTimeout(
+          () => updateState({ showMegaMenu: false, isMegaMenuClosing: false }),
+          300
+        );
+        return;
+      }
 
       if (tabKey) {
         setState((prevState) => ({
@@ -353,7 +407,7 @@ const Header: React.FC = () => {
         );
       }
     },
-    [t]
+    [t, resetInterface]
   );
 
   useEffect(() => {
@@ -436,10 +490,11 @@ const Header: React.FC = () => {
     <header
       className={`h-[45px] flex items-center px-6 relative z-10 justify-between`}
       style={{
-        backgroundColor: mounted && theme === "dark" ? '#1F2330' : '#f5f5f5',
-        boxShadow: mounted && theme === "dark"
-          ? '0 0 15px 2px #454870'
-          : '0 0 15px 2px #758696'
+        backgroundColor: mounted && theme === "dark" ? "#1F2330" : "#f5f5f5",
+        boxShadow:
+          mounted && theme === "dark"
+            ? "0 0 15px 2px #454870"
+            : "0 0 15px 2px #758696",
       }}
     >
       <div
@@ -455,9 +510,16 @@ const Header: React.FC = () => {
           );
         }}
       >
-        <FiMenu size={22} className={`${mounted && theme === "dark" ? 'text-gray-300' : 'text-gray-700'} cursor-pointer`} />
+        <FiMenu
+          size={22}
+          className={`${
+            mounted && theme === "dark" ? "text-gray-300" : "text-gray-700"
+          } cursor-pointer`}
+        />
         <span
-          className={`ml-5 text-lg font-mono font-bold tracking-wide select-none ${mounted && theme === "dark" ? 'text-gray-100' : 'text-gray-800'}`}
+          className={`ml-5 text-lg font-mono font-bold tracking-wide select-none ${
+            mounted && theme === "dark" ? "text-gray-100" : "text-gray-800"
+          }`}
           style={{ letterSpacing: "0.08em" }}
         >
           MSYSTEM
@@ -474,17 +536,38 @@ const Header: React.FC = () => {
       <div className="flex items-center gap-4">
         <FiBell
           size={20}
-          className={`${mounted && theme === "dark" ? 'text-gray-300 hover:text-gray-100' : 'text-gray-700 hover:text-gray-900'} cursor-pointer transition-colors`}
+          className={`${
+            mounted && theme === "dark"
+              ? "text-gray-300 hover:text-gray-100"
+              : "text-gray-700 hover:text-gray-900"
+          } cursor-pointer transition-colors`}
           onClick={() =>
             updateState({ showBellModal: true, isBellModalClosing: false })
           }
         />
-        <span className={`mx-1 ${mounted && theme === "dark" ? 'text-gray-600' : 'text-gray-300'}`}>|</span>
+        <span
+          className={`mx-1 ${
+            mounted && theme === "dark" ? "text-gray-600" : "text-gray-300"
+          }`}
+        >
+          |
+        </span>
         <FiRefreshCw
           size={20}
-          className={`${mounted && theme === "dark" ? 'text-gray-300 hover:text-gray-100' : 'text-gray-700 hover:text-gray-900'} cursor-pointer transition-colors`}
+          className={`${
+            mounted && theme === "dark"
+              ? "text-gray-300 hover:text-gray-100"
+              : "text-gray-700 hover:text-gray-900"
+          } cursor-pointer transition-colors`}
+          onClick={reloadPage}
         />
-        <span className={`mx-1 ${mounted && theme === "dark" ? 'text-gray-600' : 'text-gray-300'}`}>|</span>
+        <span
+          className={`mx-1 ${
+            mounted && theme === "dark" ? "text-gray-600" : "text-gray-300"
+          }`}
+        >
+          |
+        </span>
 
         <div className="relative" ref={dropdownRef}>
           {state.isMounted && state.currentLang && (
@@ -517,20 +600,42 @@ const Header: React.FC = () => {
           )}
         </div>
 
-        <span className={`mx-1 ${mounted && theme === "dark" ? 'text-gray-600' : 'text-gray-300'}`}>|</span>
+        <span
+          className={`mx-1 ${
+            mounted && theme === "dark" ? "text-gray-600" : "text-gray-300"
+          }`}
+        >
+          |
+        </span>
         {mounted && (
           <button
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className={`${theme === "dark" ? 'text-gray-300 hover:text-gray-100' : 'text-gray-700 hover:text-gray-900'} cursor-pointer transition-colors`}
-            title={`Chuyển sang ${theme === "dark" ? 'giao diện sáng' : 'giao diện tối'}`}
+            className={`${
+              theme === "dark"
+                ? "text-gray-300 hover:text-gray-100"
+                : "text-gray-700 hover:text-gray-900"
+            } cursor-pointer transition-colors`}
+            title={`Chuyển sang ${
+              theme === "dark" ? "giao diện sáng" : "giao diện tối"
+            }`}
           >
             {theme === "dark" ? <FiSun size={20} /> : <FiMoon size={20} />}
           </button>
         )}
-        <span className={`mx-1 ${mounted && theme === "dark" ? 'text-gray-600' : 'text-gray-300'}`}>|</span>
+        <span
+          className={`mx-1 ${
+            mounted && theme === "dark" ? "text-gray-600" : "text-gray-300"
+          }`}
+        >
+          |
+        </span>
         <FiUser
           size={20}
-          className={`${mounted && theme === "dark" ? 'text-gray-300 hover:text-gray-100' : 'text-gray-700 hover:text-gray-900'} cursor-pointer transition-colors`}
+          className={`${
+            mounted && theme === "dark"
+              ? "text-gray-300 hover:text-gray-100"
+              : "text-gray-700 hover:text-gray-900"
+          } cursor-pointer transition-colors`}
         />
       </div>
 
@@ -554,6 +659,22 @@ const Header: React.FC = () => {
         <TransactionReport
           isOpen={state.showTransactionReport}
           onClose={() => updateState({ showTransactionReport: false })}
+          theme={theme || "light"}
+        />
+      )}
+
+      {state.showDepositWithdrawReport && (
+        <DepositWithdrawReport
+          isOpen={state.showDepositWithdrawReport}
+          onClose={() => updateState({ showDepositWithdrawReport: false })}
+          theme={theme || "light"}
+        />
+      )}
+
+      {state.showCustomerStatementReport && (
+        <CustomerStatementReport
+          isOpen={state.showCustomerStatementReport}
+          onClose={() => updateState({ showCustomerStatementReport: false })}
           theme={theme || "light"}
         />
       )}

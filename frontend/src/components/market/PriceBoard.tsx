@@ -32,7 +32,8 @@ const PriceBoard: React.FC = () => {
       const savedTabs = localStorage.getItem("priceBoardTabs");
       const savedActiveTab = localStorage.getItem("priceBoardActiveTab");
       if (savedTabs) setSubTabs(JSON.parse(savedTabs));
-      if (savedActiveTab && !isNaN(+savedActiveTab)) setActiveSubTab(+savedActiveTab);
+      if (savedActiveTab && !isNaN(+savedActiveTab))
+        setActiveSubTab(+savedActiveTab);
     } catch (e) {
       setSubTabs([]);
     }
@@ -47,7 +48,10 @@ const PriceBoard: React.FC = () => {
   }, [mounted, subTabs, activeSubTab]);
 
   const addSubTab = () => {
-    const newTabs = [...subTabs, { id: Date.now(), name: t('PriceBoard.New tab') }];
+    const newTabs = [
+      ...subTabs,
+      { id: Date.now(), name: t("PriceBoard.New tab") },
+    ];
     setSubTabs(newTabs);
     setActiveSubTab(newTabs.length - 1);
   };
@@ -84,7 +88,7 @@ const PriceBoard: React.FC = () => {
 
   const confirmDeleteTab = () => {
     if (deletingTabId !== null) {
-      const updatedTabs = subTabs.filter(tab => tab.id !== deletingTabId);
+      const updatedTabs = subTabs.filter((tab) => tab.id !== deletingTabId);
       setSubTabs(updatedTabs);
       if (activeSubTab >= updatedTabs.length) {
         setActiveSubTab(Math.max(0, updatedTabs.length - 1));
@@ -95,15 +99,17 @@ const PriceBoard: React.FC = () => {
 
   const saveEditTab = () => {
     if (editingTabId !== null && editingTabName.trim()) {
-      setSubTabs(subTabs.map(tab =>
-        tab.id === editingTabId ? { ...tab, name: editingTabName } : tab
-      ));
+      setSubTabs(
+        subTabs.map((tab) =>
+          tab.id === editingTabId ? { ...tab, name: editingTabName } : tab
+        )
+      );
       closeModal();
     }
   };
 
   const deleteTab = (tabId: number) => {
-    const updatedTabs = subTabs.filter(tab => tab.id !== tabId);
+    const updatedTabs = subTabs.filter((tab) => tab.id !== tabId);
     setSubTabs(updatedTabs);
     if (activeSubTab >= updatedTabs.length) {
       setActiveSubTab(Math.max(0, updatedTabs.length - 1));
@@ -128,11 +134,12 @@ const PriceBoard: React.FC = () => {
               title={tab.name}
               className={`px-3 py-1 text-sm font-medium rounded-t-sm transition-colors border-none cursor-pointer min-w-15 max-w-37 overflow-hidden text-ellipsis whitespace-nowrap ${
                 activeSubTab === index
-                  ? "bg-blue-500 text-white border-b-2 border-blue-600"
+                  ? "bg-blue-700 text-white border-b-2 border-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:ring-offset-2"
                   : isDark
-                    ? `${darkText} ${darkBg} ${darkHover}`
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  ? `${darkText} ${darkBg} ${darkHover}`
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
+              aria-current={activeSubTab === index ? "page" : undefined}
             >
               {tab.name}
             </button>
@@ -140,7 +147,7 @@ const PriceBoard: React.FC = () => {
         </div>
         <button
           onClick={addSubTab}
-          title={t('PriceBoard.Add new tab')}
+          title={t("PriceBoard.Add new tab")}
           className={`flex items-center justify-center w-12 h-6 rounded-sm border-none bg-transparent cursor-pointer transition-colors ${
             isDark
               ? "text-gray-400 hover:text-gray-200"
@@ -163,7 +170,7 @@ const PriceBoard: React.FC = () => {
           type="text"
           value={contractCode}
           onChange={(e) => setContractCode(e.target.value)}
-          placeholder={t('PriceBoard.Enter contract code...')}
+          placeholder={t("PriceBoard.Enter contract code...")}
           className={`flex-1 px-3 py-1 rounded text-sm border transition-colors ${
             isDark
               ? `${darkBg} text-white border-gray-600 focus:border-blue-500 focus:outline-none`
@@ -173,9 +180,22 @@ const PriceBoard: React.FC = () => {
 
         <div className="flex items-center">
           {[
-            { icon: FiEdit2, title: t('PriceBoard.Edit tab name'), onClick: () => currentTab && startEditTab(currentTab.id, currentTab.name) },
-            { icon: FiTrash2, title: t('PriceBoard.Delete tab'), onClick: () => currentTab && startDeleteTab(currentTab.id) },
-            { icon: FiDownload, title: t('PriceBoard.Export CSV'), onClick: () => {} }
+            {
+              icon: FiEdit2,
+              title: t("PriceBoard.Edit tab name"),
+              onClick: () =>
+                currentTab && startEditTab(currentTab.id, currentTab.name),
+            },
+            {
+              icon: FiTrash2,
+              title: t("PriceBoard.Delete tab"),
+              onClick: () => currentTab && startDeleteTab(currentTab.id),
+            },
+            {
+              icon: FiDownload,
+              title: t("PriceBoard.Export CSV"),
+              onClick: () => {},
+            },
           ].map(({ icon: Icon, title, onClick }, i) => (
             <button
               key={i}
@@ -183,8 +203,12 @@ const PriceBoard: React.FC = () => {
               title={title}
               className={`p-1 rounded transition-colors border-none bg-transparent cursor-pointer ${
                 isDark
-                  ? `text-gray-400 ${i === 1 ? "hover:text-red-400" : "hover:text-gray-200"} hover:bg-[#262b3f]`
-                  : `text-gray-600 ${i === 1 ? "hover:text-red-600" : "hover:text-gray-800"} hover:bg-gray-200`
+                  ? `text-gray-400 ${
+                      i === 1 ? "hover:text-red-400" : "hover:text-gray-200"
+                    } hover:bg-[#262b3f]`
+                  : `text-gray-600 ${
+                      i === 1 ? "hover:text-red-600" : "hover:text-gray-800"
+                    } hover:bg-gray-200`
               }`}
             >
               <Icon size={16} />
@@ -195,14 +219,20 @@ const PriceBoard: React.FC = () => {
 
       {/* Content */}
       <div className="flex-1 p-4 bg-transparent">
-        <div className={`text-center mt-8 ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+        <div
+          className={`text-center mt-8 ${
+            isDark ? "text-gray-400" : "text-gray-500"
+          }`}
+        >
           {subTabs.length === 0 ? (
             <>
-              <div className="mb-4">{t('PriceBoard.No tabs created yet')}</div>
-              <div className="text-sm">{t('PriceBoard.Press + to create first tab')}</div>
+              <div className="mb-4">{t("PriceBoard.No tabs created yet")}</div>
+              <div className="text-sm">
+                {t("PriceBoard.Press + to create first tab")}
+              </div>
             </>
           ) : (
-            t('PriceBoard.Price board content will be displayed here')
+            t("PriceBoard.Price board content will be displayed here")
           )}
         </div>
       </div>
@@ -216,7 +246,9 @@ const PriceBoard: React.FC = () => {
             }`}
           >
             <div className="border-b border-gray-200 pb-4 mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">{t('PriceBoard.Rename list')}</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {t("PriceBoard.Rename list")}
+              </h3>
             </div>
             <input
               type="text"
@@ -228,7 +260,7 @@ const PriceBoard: React.FC = () => {
                 else if (e.key === "Escape") closeModal();
               }}
               autoFocus
-              placeholder={t('PriceBoard.Enter new list name...')}
+              placeholder={t("PriceBoard.Enter new list name...")}
               className="w-full px-3 py-2 rounded text-sm border border-gray-300 bg-white text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
@@ -237,7 +269,7 @@ const PriceBoard: React.FC = () => {
                 disabled={isClosing}
                 className="px-4 py-2 rounded text-sm font-medium transition-colors text-gray-700 hover:text-gray-900 hover:bg-gray-100"
               >
-                {t('PriceBoard.Cancel')}
+                {t("PriceBoard.Cancel")}
               </button>
               <button
                 onClick={saveEditTab}
@@ -248,7 +280,7 @@ const PriceBoard: React.FC = () => {
                     : "bg-gray-300 text-gray-500 cursor-not-allowed"
                 }`}
               >
-                {t('PriceBoard.Save')}
+                {t("PriceBoard.Save")}
               </button>
             </div>
           </div>
@@ -264,11 +296,17 @@ const PriceBoard: React.FC = () => {
             }`}
           >
             <div className="border-b border-gray-200 pb-4 mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">{t('PriceBoard.Confirm delete')}</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                {t("PriceBoard.Confirm delete")}
+              </h3>
             </div>
             <div className="mb-4">
-              <p className="text-gray-700 mb-2">{t('PriceBoard.Are you sure you want to delete this tab?')}</p>
-              <p className="text-sm text-gray-500">{t('PriceBoard.This action cannot be undone.')}</p>
+              <p className="text-gray-700 mb-2">
+                {t("PriceBoard.Are you sure you want to delete this tab?")}
+              </p>
+              <p className="text-sm text-gray-500">
+                {t("PriceBoard.This action cannot be undone.")}
+              </p>
             </div>
             <div className="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
               <button
@@ -276,14 +314,14 @@ const PriceBoard: React.FC = () => {
                 disabled={isClosing}
                 className="px-4 py-2 rounded text-sm font-medium transition-colors text-gray-700 hover:text-gray-900 hover:bg-gray-100"
               >
-                {t('PriceBoard.No, cancel')}
+                {t("PriceBoard.No, cancel")}
               </button>
               <button
                 onClick={confirmDeleteTab}
                 disabled={isClosing}
                 className="px-4 py-2 rounded text-sm font-medium transition-colors bg-red-500 text-white hover:bg-red-600"
               >
-                {t('PriceBoard.Yes, delete')}
+                {t("PriceBoard.Yes, delete")}
               </button>
             </div>
           </div>
