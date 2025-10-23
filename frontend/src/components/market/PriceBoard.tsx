@@ -108,19 +108,10 @@ const PriceBoard: React.FC = () => {
     }
   };
 
-  const deleteTab = (tabId: number) => {
-    const updatedTabs = subTabs.filter((tab) => tab.id !== tabId);
-    setSubTabs(updatedTabs);
-    if (activeSubTab >= updatedTabs.length) {
-      setActiveSubTab(Math.max(0, updatedTabs.length - 1));
-    }
-  };
-
   const currentTab = subTabs[activeSubTab];
   const darkBg = "bg-[#262b3f]";
   const darkText = "text-gray-300";
   const darkHover = `hover:bg-[#2d3748]`;
-  const darkBtnHover = "hover:text-gray-200 hover:bg-[#262b3f]";
 
   return (
     <div className="h-full flex flex-col">

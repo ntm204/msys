@@ -10,6 +10,13 @@ interface FullPageModalProps {
   children: React.ReactNode;
 }
 
+// Định nghĩa type cho window.onCloseTab
+declare global {
+  interface Window {
+    onCloseTab?: (key: string) => void;
+  }
+}
+
 const HEADER_HEIGHT = 50; // px
 const MODAL_HEADER_OFFSET = 10; // px
 
@@ -42,28 +49,50 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
         minHeight: `calc(100vh - ${
           HEADER_HEIGHT + MODAL_HEADER_OFFSET + 10
         }px)`,
-        backgroundColor: isDark ? '#151926' : '#ffffff',
+        backgroundColor: isDark ? "#151926" : "#ffffff",
       }}
     >
       {/* Modal Header: Tabs + Close */}
-      <div className="relative flex items-center rounded-none h-[30px] min-h-[30px] max-h-[30px]"
-        style={{ backgroundColor: isDark ? '#262b3f' : '#f1f5f9' }}
+      <div
+        className="relative flex items-center rounded-none h-[30px] min-h-[30px] max-h-[30px]"
+        style={{ backgroundColor: isDark ? "#262b3f" : "#f1f5f9" }}
       >
         <div className="flex items-center h-full">
           {tabs.map((tab) => (
             <div
               key={tab.key}
               className={`flex items-center h-full cursor-pointer rounded-none px-2 py-0 min-h-[30px] text-[15px] font-medium`}
-                style={{
-                  color: activeTab === tab.key ? (isDark ? '#e2e8f0' : '#1a202c') : (isDark ? '#a0aec0' : '#718096'),
-                  backgroundColor: activeTab === tab.key ? (isDark ? '#151926' : '#ffffff') : (isDark ? '#262b3f' : '#f1f5f9')
-                }}
+              style={{
+                color:
+                  activeTab === tab.key
+                    ? isDark
+                      ? "#e2e8f0"
+                      : "#1a202c"
+                    : isDark
+                    ? "#a0aec0"
+                    : "#718096",
+                backgroundColor:
+                  activeTab === tab.key
+                    ? isDark
+                      ? "#151926"
+                      : "#ffffff"
+                    : isDark
+                    ? "#262b3f"
+                    : "#f1f5f9",
+              }}
               onClick={() => onTabChange(tab.key)}
             >
               <span
                 className="font-medium"
                 style={{
-                  color: activeTab === tab.key ? (isDark ? '#e2e8f0' : '#1a202c') : (isDark ? '#a0aec0' : '#718096')
+                  color:
+                    activeTab === tab.key
+                      ? isDark
+                        ? "#e2e8f0"
+                        : "#1a202c"
+                      : isDark
+                      ? "#a0aec0"
+                      : "#718096",
                 }}
               >
                 {tab.label}
@@ -79,8 +108,8 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
                   } else {
                     // Còn nhiều hơn 1 tab thì chỉ đóng tab này
                     if (typeof window !== "undefined") {
-                      if (typeof (window as any).onCloseTab === "function") {
-                        (window as any).onCloseTab(tab.key);
+                      if (typeof window.onCloseTab === "function") {
+                        window.onCloseTab(tab.key);
                       }
                     }
                   }
@@ -91,7 +120,14 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
                   size={14}
                   className="font-bold"
                   style={{
-                    color: activeTab === tab.key ? (isDark ? '#e2e8f0' : '#1a202c') : (isDark ? '#a0aec0' : '#718096')
+                    color:
+                      activeTab === tab.key
+                        ? isDark
+                          ? "#e2e8f0"
+                          : "#1a202c"
+                        : isDark
+                        ? "#a0aec0"
+                        : "#718096",
                   }}
                 />
               </button>
@@ -100,15 +136,16 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
         </div>
         <button
           className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-[22px]"
-          style={{ color: isDark ? '#a0aec0' : '#718096' }}
+          style={{ color: isDark ? "#a0aec0" : "#718096" }}
           aria-label="Đóng modal"
           onClick={onClose}
         >
           <FiX size={22} className="font-bold" />
         </button>
       </div>
-      <div className="flex-1 overflow-auto rounded-none mt-[5px]"
-        style={{ backgroundColor: isDark ? '#151926' : '#ffffff' }}
+      <div
+        className="flex-1 overflow-auto rounded-none mt-[5px]"
+        style={{ backgroundColor: isDark ? "#151926" : "#ffffff" }}
       >
         {children}
       </div>

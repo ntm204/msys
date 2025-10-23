@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FiDownload, FiCalendar } from "react-icons/fi";
+import { FiCalendar } from "react-icons/fi";
 import toast from "react-hot-toast";
 
 interface DepositWithdrawReportProps {
@@ -19,8 +19,6 @@ const DepositWithdrawReport: React.FC<DepositWithdrawReportProps> = ({
   const [endDate, setEndDate] = useState("");
   const [fileType, setFileType] = useState("pdf");
   const [isLoading, setIsLoading] = useState(false);
-
-  const isDark = theme === "dark";
 
   if (!isOpen) return null;
 

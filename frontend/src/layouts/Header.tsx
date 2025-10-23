@@ -60,7 +60,10 @@ const MENU_ITEMS = [
   { icon: FiBarChart2, label: "Báo cáo" },
 ] as const;
 
-const SUBMENU_ITEMS: Record<string, Array<{ label: string; icon?: any }>> = {
+const SUBMENU_ITEMS: Record<
+  string,
+  Array<{ label: string; icon?: React.ComponentType<{ size: number }> }>
+> = {
   "Thị trường": [{ label: "Bảng giá", icon: FiClipboard }],
   "Quản lý đặt lệnh": [
     { label: "Đặt lệnh", icon: FiCheckCircle },
@@ -106,48 +109,61 @@ const TAB_CONFIG: Record<
 };
 
 // Memoized Components
-const MenuItem = memo(({ icon: Icon, label, onSubmenuClick, theme }: any) => {
-  const [hovered, setHovered] = useState(false);
-  const { t } = useTranslation();
-  const hasSubmenu = !!SUBMENU_ITEMS[label];
-  const showArrow = hasSubmenu;
+interface MenuItemProps {
+  icon: React.ComponentType<{ size: number }>;
+  label: string;
+  onSubmenuClick?: (label: string) => void;
+  theme?: string;
+}
+const MenuItem = memo(
+  ({ icon: Icon, label, onSubmenuClick, theme }: MenuItemProps) => {
+    const [hovered, setHovered] = useState(false);
+    const { t } = useTranslation();
+    const hasSubmenu = !!SUBMENU_ITEMS[label];
+    const showArrow = hasSubmenu;
 
-  return (
-    <div
-      className="flex items-center px-6 py-2 gap-3 text-gray-700 cursor-pointer transition-colors duration-150 group hover:text-blue-600 relative"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={() => !hasSubmenu && onSubmenuClick?.(label)}
-    >
-      <Icon size={14} />
-      <span className="flex-1 text-base">{t(`Header.${label}`)}</span>
-      {showArrow && (
-        <FiChevronRight size={14} className="group-hover:text-blue-600" />
-      )}
-      {hasSubmenu && hovered && showArrow && (
-        <div
-          className="absolute left-full top-0 min-w-[160px] bg-white z-50 rounded-lg py-1 px-2 shadow-[0_8px_32px_0_rgba(0,0,0,0.24)]"
-          style={{ marginLeft: "-16px", width: "auto", whiteSpace: "nowrap" }}
-        >
-          {SUBMENU_ITEMS[label].map((sub) => (
-            <div
-              key={sub.label}
-              className="flex items-center px-2 py-2 gap-2 text-gray-700 hover:text-blue-600 cursor-pointer transition-colors text-sm rounded-sm"
-              onClick={() => onSubmenuClick?.(sub.label)}
-            >
-              {sub.icon && <sub.icon size={14} />}
-              <span>{t(`Header.${sub.label}`)}</span>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-});
+    return (
+      <div
+        className="flex items-center px-6 py-2 gap-3 text-gray-700 cursor-pointer transition-colors duration-150 group hover:text-blue-600 relative"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onClick={() => !hasSubmenu && onSubmenuClick?.(label)}
+      >
+        <Icon size={14} />
+        <span className="flex-1 text-base">{t(`Header.${label}`)}</span>
+        {showArrow && (
+          <FiChevronRight size={14} className="group-hover:text-blue-600" />
+        )}
+        {hasSubmenu && hovered && showArrow && (
+          <div
+            className="absolute left-full top-0 min-w-[160px] bg-white z-50 rounded-lg py-1 px-2 shadow-[0_8px_32px_0_rgba(0,0,0,0.24)]"
+            style={{ marginLeft: "-16px", width: "auto", whiteSpace: "nowrap" }}
+          >
+            {SUBMENU_ITEMS[label].map((sub) => (
+              <div
+                key={sub.label}
+                className="flex items-center px-2 py-2 gap-2 text-gray-700 hover:text-blue-600 cursor-pointer transition-colors text-sm rounded-sm"
+                onClick={() => onSubmenuClick?.(sub.label)}
+              >
+                {sub.icon && <sub.icon size={14} />}
+                <span>{t(`Header.${sub.label}`)}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+);
 
 MenuItem.displayName = "MenuItem";
 
-const MegaMenu = memo(({ onSubmenuClick, isClosing, theme }: any) => (
+interface MegaMenuProps {
+  onSubmenuClick: (label: string) => void;
+  isClosing: boolean;
+  theme?: string;
+}
+const MegaMenu = memo(({ onSubmenuClick, isClosing, theme }: MegaMenuProps) => (
   <div
     className={`absolute left-[-8px] top-[48px] w-[290px] bg-white rounded-sm shadow-xl z-[999] ${
       isClosing ? "animate-slide-up" : "animate-slide-down"
@@ -185,6 +201,15 @@ const MegaMenu = memo(({ onSubmenuClick, isClosing, theme }: any) => (
 
 MegaMenu.displayName = "MegaMenu";
 
+interface BellModalProps {
+  isClosing: boolean;
+  activeTab: number;
+  onTabChange: (idx: number) => void;
+  onClose: () => void;
+  tabRefs: React.MutableRefObject<(HTMLButtonElement | null)[]>;
+  indicatorStyle: { left: number; width: number };
+  theme?: string;
+}
 const BellModal = memo(
   ({
     isClosing,
@@ -194,7 +219,7 @@ const BellModal = memo(
     tabRefs,
     indicatorStyle,
     theme,
-  }: any) => {
+  }: BellModalProps) => {
     const { t } = useTranslation();
     return (
       <div
@@ -454,7 +479,7 @@ const Header: React.FC = () => {
         try {
           const parsedTabs = JSON.parse(savedTabs);
           modalTabs = Array.isArray(parsedTabs)
-            ? parsedTabs.map((tab: any) => ({
+            ? parsedTabs.map((tab: { key: string }) => ({
                 key: tab.key,
                 label: t(`Header.${TAB_CONFIG[tab.key]?.label || tab.key}`),
               }))
@@ -467,7 +492,8 @@ const Header: React.FC = () => {
         showModal: modalTabs.length > 0,
       });
     }
-    (window as any).onCloseTab = handleCloseTab;
+    (window as unknown as { onCloseTab?: (key: string) => void }).onCloseTab =
+      handleCloseTab;
   }, [handleCloseTab, i18n]);
 
   useEffect(() => {
