@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiDownload, FiCalendar } from "react-icons/fi";
+import toast from "react-hot-toast";
 
 interface CustomerStatementReportProps {
   isOpen: boolean;
@@ -24,7 +25,7 @@ const CustomerStatementReport: React.FC<CustomerStatementReportProps> = ({
 
   const handleDownload = async () => {
     if (!startDate) {
-      alert("Vui lòng chọn ngày bắt đầu");
+      toast.error(t("Report.Vui lòng chọn ngày bắt đầu"));
       return;
     }
 

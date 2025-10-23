@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiDownload, FiCalendar } from "react-icons/fi";
+import toast from "react-hot-toast";
 
 interface TransactionReportProps {
   isOpen: boolean;
@@ -11,7 +12,7 @@ interface TransactionReportProps {
 const TransactionReport: React.FC<TransactionReportProps> = ({
   isOpen,
   onClose,
-  theme
+  theme,
 }) => {
   const { t } = useTranslation();
   const [startDate, setStartDate] = useState("");
@@ -25,14 +26,14 @@ const TransactionReport: React.FC<TransactionReportProps> = ({
 
   const handleDownload = async () => {
     if (!startDate || !endDate) {
-      alert("Vui lòng chọn ngày bắt đầu và ngày kết thúc");
+      toast.error(t("Report.Vui lòng chọn ngày bắt đầu và ngày kết thúc"));
       return;
     }
 
     setIsLoading(true);
     try {
       // TODO: Implement actual report generation
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate API call
       console.log("Downloading report:", { startDate, endDate, fileType });
     } catch (error) {
       console.error("Error generating report:", error);
@@ -44,10 +45,7 @@ const TransactionReport: React.FC<TransactionReportProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/10"
-        onClick={onClose}
-      />
+      <div className="absolute inset-0 bg-black/10" onClick={onClose} />
 
       {/* Modal */}
       <div className="relative w-full max-w-2xl mx-4 rounded-lg shadow-xl bg-white">
@@ -82,11 +80,15 @@ const TransactionReport: React.FC<TransactionReportProps> = ({
                       value={startDate}
                       onChange={(e) => setStartDate(e.target.value)}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                      style={{ colorScheme: 'light' }}
+                      style={{ colorScheme: "light" }}
                     />
-                    <div className={`w-full h-full px-3 py-2 rounded-md border text-sm bg-white flex items-center hover:border-blue-400 transition-colors ${
-                      startDate ? 'border-gray-900 text-gray-900' : 'border-gray-300 text-gray-400'
-                    }`}>
+                    <div
+                      className={`w-full h-full px-3 py-2 rounded-md border text-sm bg-white flex items-center hover:border-blue-400 transition-colors ${
+                        startDate
+                          ? "border-gray-900 text-gray-900"
+                          : "border-gray-300 text-gray-400"
+                      }`}
+                    >
                       <span className="flex-1">
                         {startDate || "Chọn ngày bắt đầu"}
                       </span>
@@ -106,11 +108,15 @@ const TransactionReport: React.FC<TransactionReportProps> = ({
                       value={endDate}
                       onChange={(e) => setEndDate(e.target.value)}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
-                      style={{ colorScheme: 'light' }}
+                      style={{ colorScheme: "light" }}
                     />
-                    <div className={`w-full h-full px-3 py-2 rounded-md border text-sm bg-white flex items-center hover:border-blue-400 transition-colors ${
-                      endDate ? 'border-gray-900 text-gray-900' : 'border-gray-300 text-gray-400'
-                    }`}>
+                    <div
+                      className={`w-full h-full px-3 py-2 rounded-md border text-sm bg-white flex items-center hover:border-blue-400 transition-colors ${
+                        endDate
+                          ? "border-gray-900 text-gray-900"
+                          : "border-gray-300 text-gray-400"
+                      }`}
+                    >
                       <span className="flex-1">
                         {endDate || "Chọn ngày kết thúc"}
                       </span>
@@ -142,7 +148,7 @@ const TransactionReport: React.FC<TransactionReportProps> = ({
                   checked={fileType === "pdf"}
                   onChange={(e) => setFileType(e.target.value)}
                   className="w-4 h-4 text-blue-500 border-gray-300 focus:ring-blue-500 cursor-pointer"
-                  style={{ colorScheme: 'light' }}
+                  style={{ colorScheme: "light" }}
                 />
                 <span className="ml-3 text-sm text-gray-700 group-hover:text-gray-900">
                   Adobe Acrobat (.pdf)
@@ -158,7 +164,7 @@ const TransactionReport: React.FC<TransactionReportProps> = ({
                   checked={fileType === "docx"}
                   onChange={(e) => setFileType(e.target.value)}
                   className="w-4 h-4 text-blue-500 border-gray-300 focus:ring-blue-500 cursor-pointer"
-                  style={{ colorScheme: 'light' }}
+                  style={{ colorScheme: "light" }}
                 />
                 <span className="ml-3 text-sm text-gray-700 group-hover:text-gray-900">
                   Microsoft Office Word (.docx)
@@ -174,7 +180,7 @@ const TransactionReport: React.FC<TransactionReportProps> = ({
                   checked={fileType === "xlsx"}
                   onChange={(e) => setFileType(e.target.value)}
                   className="w-4 h-4 text-blue-500 border-gray-300 focus:ring-blue-500 cursor-pointer"
-                  style={{ colorScheme: 'light' }}
+                  style={{ colorScheme: "light" }}
                 />
                 <span className="ml-3 text-sm text-gray-700 group-hover:text-gray-900">
                   Microsoft Office Excel (.xlsx)

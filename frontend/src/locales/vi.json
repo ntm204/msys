@@ -24,7 +24,9 @@
     "Thông báo": "Thông báo",
     "Lệnh/Giao dịch": "Lệnh/Giao dịch",
     "Quản trị": "Quản trị",
-    "Hệ thống": "Hệ thống"
+    "Hệ thống": "Hệ thống",
+    "Đang tải lại trang...": "Đang tải lại trang...",
+    "Đặt lại giao diện thành công!": "Đặt lại giao diện thành công!"
   },
   "Order": {
     "Quản lý đặt lệnh": "Quản lý đặt lệnh",
@@ -59,5 +61,9 @@
   },
   "SettlePosition": {
     "Trạng thái tất toán": "Trạng thái tất toán"
+  },
+  "Report": {
+    "Vui lòng chọn ngày bắt đầu và ngày kết thúc": "Vui lòng chọn ngày bắt đầu và ngày kết thúc",
+    "Vui lòng chọn ngày bắt đầu": "Vui lòng chọn ngày bắt đầu"
   }
 }

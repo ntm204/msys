@@ -117,6 +117,7 @@ const MenuItem = memo(({ icon: Icon, label, onSubmenuClick, theme }: any) => {
       className="flex items-center px-6 py-2 gap-3 text-gray-700 cursor-pointer transition-colors duration-150 group hover:text-blue-600 relative"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
+      onClick={() => !hasSubmenu && onSubmenuClick?.(label)}
     >
       <Icon size={14} />
       <span className="flex-1 text-base">{t(`Header.${label}`)}</span>
@@ -264,11 +265,11 @@ const Header: React.FC = () => {
 
   const reloadPage = useCallback(() => {
     // Keep current tabs and settings, just refresh the page
-    toast.success("Đang tải lại trang...");
+    toast.success(t("Header.Đang tải lại trang..."));
     setTimeout(() => {
       window.location.reload();
     }, 1000);
-  }, []);
+  }, [t]);
 
   const resetInterface = useCallback(() => {
     // Clear localStorage data related to interface
@@ -280,11 +281,11 @@ const Header: React.FC = () => {
     setTheme("light");
 
     // Show success message before reload
-    toast.success("Đã đặt lại giao diện thành công! Đang tải lại...");
+    toast.success(t("Header.Đặt lại giao diện thành công!"));
     setTimeout(() => {
       window.location.reload();
     }, 1500);
-  }, [setTheme]);
+  }, [setTheme, t]);
 
   useEffect(() => {
     setMounted(true);
