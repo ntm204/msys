@@ -12,7 +12,6 @@ interface CustomerStatementReportProps {
 const CustomerStatementReport: React.FC<CustomerStatementReportProps> = ({
   isOpen,
   onClose,
-  theme,
 }) => {
   const { t } = useTranslation();
   const [startDate, setStartDate] = useState("");
@@ -30,7 +29,7 @@ const CustomerStatementReport: React.FC<CustomerStatementReportProps> = ({
     setIsLoading(true);
     try {
       // TODO: Implement actual report generation
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       console.log("Downloading customer statement report:", {
         startDate,
         fileType,
@@ -69,7 +68,6 @@ const CustomerStatementReport: React.FC<CustomerStatementReportProps> = ({
 
               {/* Right side - Date input */}
               <div className="flex-1 flex gap-3 items-end">
-                {/* Start Date Only */}
                 <div className="flex-1 max-w-xs">
                   <label className="block text-xs font-medium mb-1 text-gray-600">
                     Ngày bắt đầu
@@ -111,7 +109,6 @@ const CustomerStatementReport: React.FC<CustomerStatementReportProps> = ({
 
             {/* Right side - File type options */}
             <div className="flex-1 space-y-2">
-              {/* PDF Option */}
               <label className="flex items-center cursor-pointer group py-2 px-3 rounded-md hover:bg-gray-50 transition-colors">
                 <input
                   type="radio"
@@ -127,7 +124,6 @@ const CustomerStatementReport: React.FC<CustomerStatementReportProps> = ({
                 </span>
               </label>
 
-              {/* DOCX Option */}
               <label className="flex items-center cursor-pointer group py-2 px-3 rounded-md hover:bg-gray-50 transition-colors">
                 <input
                   type="radio"
@@ -143,7 +139,6 @@ const CustomerStatementReport: React.FC<CustomerStatementReportProps> = ({
                 </span>
               </label>
 
-              {/* XLSX Option */}
               <label className="flex items-center cursor-pointer group py-2 px-3 rounded-md hover:bg-gray-50 transition-colors">
                 <input
                   type="radio"

@@ -12,7 +12,6 @@ interface TransactionReportProps {
 const TransactionReport: React.FC<TransactionReportProps> = ({
   isOpen,
   onClose,
-  theme,
 }) => {
   const { t } = useTranslation();
   const [startDate, setStartDate] = useState("");
@@ -31,7 +30,7 @@ const TransactionReport: React.FC<TransactionReportProps> = ({
     setIsLoading(true);
     try {
       // TODO: Implement actual report generation
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       console.log("Downloading report:", { startDate, endDate, fileType });
     } catch (error) {
       console.error("Error generating report:", error);
@@ -67,7 +66,6 @@ const TransactionReport: React.FC<TransactionReportProps> = ({
 
               {/* Right side - Date inputs */}
               <div className="flex-1 flex gap-3 items-end">
-                {/* Start Date */}
                 <div className="flex-1">
                   <label className="block text-xs font-medium mb-1 text-gray-600">
                     Ngày bắt đầu
@@ -95,7 +93,6 @@ const TransactionReport: React.FC<TransactionReportProps> = ({
                   </div>
                 </div>
 
-                {/* End Date */}
                 <div className="flex-1">
                   <label className="block text-xs font-medium mb-1 text-gray-600">
                     Ngày kết thúc
@@ -137,7 +134,6 @@ const TransactionReport: React.FC<TransactionReportProps> = ({
 
             {/* Right side - File type options */}
             <div className="flex-1 space-y-2">
-              {/* PDF Option */}
               <label className="flex items-center cursor-pointer group py-2 px-3 rounded-md hover:bg-gray-50 transition-colors">
                 <input
                   type="radio"
@@ -153,7 +149,6 @@ const TransactionReport: React.FC<TransactionReportProps> = ({
                 </span>
               </label>
 
-              {/* DOCX Option */}
               <label className="flex items-center cursor-pointer group py-2 px-3 rounded-md hover:bg-gray-50 transition-colors">
                 <input
                   type="radio"
@@ -169,7 +164,6 @@ const TransactionReport: React.FC<TransactionReportProps> = ({
                 </span>
               </label>
 
-              {/* XLSX Option */}
               <label className="flex items-center cursor-pointer group py-2 px-3 rounded-md hover:bg-gray-50 transition-colors">
                 <input
                   type="radio"

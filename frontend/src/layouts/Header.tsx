@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback, memo } from "react";
+import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import "../../i18n";
@@ -53,7 +54,6 @@ const MENU_ITEMS = [
   { icon: FiFileText, label: "Quản lý đặt lệnh" },
   { icon: FiBriefcase, label: "Quản lý tài khoản" },
   { divider: true },
-  // { icon: FiCircle, label: "Giao diện" }, // Removed - theme toggle now handled by direct button
   { icon: FiType, label: "Kích thước" },
   { icon: FiRotateCcw, label: "Đặt lại giao diện" },
   { divider: true },
@@ -74,10 +74,6 @@ const SUBMENU_ITEMS: Record<
     { label: "Trạng thái tất toán", icon: FiXCircle },
     { label: "Chi tiết tài khoản", icon: FiInfo },
   ],
-  // "Giao diện": [ // Removed - theme toggle now handled by direct button
-  //   { label: "Giao diện sáng", icon: FiSun },
-  //   { label: "Giao diện tối", icon: FiMoon },
-  // ],
   "Kích thước": [
     { label: "Nhỏ", icon: FiZoomOut },
     { label: "Trung bình", icon: FiAlignJustify },
@@ -113,10 +109,9 @@ interface MenuItemProps {
   icon: React.ComponentType<{ size: number }>;
   label: string;
   onSubmenuClick?: (label: string) => void;
-  theme?: string;
 }
 const MenuItem = memo(
-  ({ icon: Icon, label, onSubmenuClick, theme }: MenuItemProps) => {
+  ({ icon: Icon, label, onSubmenuClick }: MenuItemProps) => {
     const [hovered, setHovered] = useState(false);
     const { t } = useTranslation();
     const hasSubmenu = !!SUBMENU_ITEMS[label];
@@ -161,9 +156,8 @@ MenuItem.displayName = "MenuItem";
 interface MegaMenuProps {
   onSubmenuClick: (label: string) => void;
   isClosing: boolean;
-  theme?: string;
 }
-const MegaMenu = memo(({ onSubmenuClick, isClosing, theme }: MegaMenuProps) => (
+const MegaMenu = memo(({ onSubmenuClick, isClosing }: MegaMenuProps) => (
   <div
     className={`absolute left-[-8px] top-[48px] w-[290px] bg-white rounded-sm shadow-xl z-[999] ${
       isClosing ? "animate-slide-up" : "animate-slide-down"
@@ -191,7 +185,6 @@ const MegaMenu = memo(({ onSubmenuClick, isClosing, theme }: MegaMenuProps) => (
             icon={item.icon}
             label={item.label}
             onSubmenuClick={onSubmenuClick}
-            theme={theme}
           />
         )
       )}
@@ -208,7 +201,6 @@ interface BellModalProps {
   onClose: () => void;
   tabRefs: React.MutableRefObject<(HTMLButtonElement | null)[]>;
   indicatorStyle: { left: number; width: number };
-  theme?: string;
 }
 const BellModal = memo(
   ({
@@ -218,7 +210,6 @@ const BellModal = memo(
     onClose,
     tabRefs,
     indicatorStyle,
-    theme,
   }: BellModalProps) => {
     const { t } = useTranslation();
     return (
@@ -289,7 +280,6 @@ const Header: React.FC = () => {
   const [mounted, setMounted] = useState(false);
 
   const reloadPage = useCallback(() => {
-    // Keep current tabs and settings, just refresh the page
     toast.success(t("Header.Đang tải lại trang..."));
     setTimeout(() => {
       window.location.reload();
@@ -337,11 +327,8 @@ const Header: React.FC = () => {
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const menuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const isInitialized = useRef(false);
 
-  const updateState = (updates: Partial<typeof state>) =>
-    setState((prev) => ({ ...prev, ...updates }));
-
-  // Sử dụng functional update để tránh stale closure
   const handleCloseTab = useCallback((key: string) => {
     setState((prevState) => {
       const newTabs = prevState.modalTabs.filter((t) => t.key !== key);
@@ -369,9 +356,18 @@ const Header: React.FC = () => {
 
       // Handle transaction report
       if (label === "Báo cáo giao dịch") {
-        updateState({ showTransactionReport: true, isMegaMenuClosing: true });
+        setState((prev) => ({
+          ...prev,
+          showTransactionReport: true,
+          isMegaMenuClosing: true,
+        }));
         setTimeout(
-          () => updateState({ showMegaMenu: false, isMegaMenuClosing: false }),
+          () =>
+            setState((prev) => ({
+              ...prev,
+              showMegaMenu: false,
+              isMegaMenuClosing: false,
+            })),
           300
         );
         return;
@@ -379,12 +375,18 @@ const Header: React.FC = () => {
 
       // Handle deposit/withdraw report
       if (label === "Báo cáo lịch sử nộp rút tiền") {
-        updateState({
+        setState((prev) => ({
+          ...prev,
           showDepositWithdrawReport: true,
           isMegaMenuClosing: true,
-        });
+        }));
         setTimeout(
-          () => updateState({ showMegaMenu: false, isMegaMenuClosing: false }),
+          () =>
+            setState((prev) => ({
+              ...prev,
+              showMegaMenu: false,
+              isMegaMenuClosing: false,
+            })),
           300
         );
         return;
@@ -392,12 +394,18 @@ const Header: React.FC = () => {
 
       // Handle customer statement report
       if (label === "Báo cáo sao kê khách hàng") {
-        updateState({
+        setState((prev) => ({
+          ...prev,
           showCustomerStatementReport: true,
           isMegaMenuClosing: true,
-        });
+        }));
         setTimeout(
-          () => updateState({ showMegaMenu: false, isMegaMenuClosing: false }),
+          () =>
+            setState((prev) => ({
+              ...prev,
+              showMegaMenu: false,
+              isMegaMenuClosing: false,
+            })),
           300
         );
         return;
@@ -406,9 +414,14 @@ const Header: React.FC = () => {
       // Handle reset interface
       if (label === "Đặt lại giao diện") {
         resetInterface();
-        updateState({ isMegaMenuClosing: true });
+        setState((prev) => ({ ...prev, isMegaMenuClosing: true }));
         setTimeout(
-          () => updateState({ showMegaMenu: false, isMegaMenuClosing: false }),
+          () =>
+            setState((prev) => ({
+              ...prev,
+              showMegaMenu: false,
+              isMegaMenuClosing: false,
+            })),
           300
         );
         return;
@@ -428,7 +441,12 @@ const Header: React.FC = () => {
           isMegaMenuClosing: true,
         }));
         setTimeout(
-          () => updateState({ showMegaMenu: false, isMegaMenuClosing: false }),
+          () =>
+            setState((prev) => ({
+              ...prev,
+              showMegaMenu: false,
+              isMegaMenuClosing: false,
+            })),
           300
         );
       }
@@ -453,7 +471,7 @@ const Header: React.FC = () => {
         dropdownRef.current &&
         !dropdownRef.current.contains(e.target as Node)
       ) {
-        updateState({ showDropdown: false });
+        setState((prev) => ({ ...prev, showDropdown: false }));
       }
     };
     if (state.showDropdown) {
@@ -463,15 +481,24 @@ const Header: React.FC = () => {
     }
   }, [state.showDropdown]);
 
+  // Initialization effect
   useEffect(() => {
-    updateState({ isMounted: true });
+    if (isInitialized.current) return;
+    isInitialized.current = true;
+
+    setState((prev) => ({ ...prev, isMounted: true }));
+    (window as unknown as { onCloseTab?: (key: string) => void }).onCloseTab =
+      handleCloseTab;
+
     if (typeof window !== "undefined") {
+      // Language initialization
       const saved = localStorage.getItem("selectedLang");
       const selectedLang =
         LANGUAGES.find((l) => l.key === saved) || LANGUAGES[1];
-      updateState({ currentLang: selectedLang });
+      setState((prev) => ({ ...prev, currentLang: selectedLang }));
       i18n.changeLanguage(selectedLang.key);
 
+      // Tabs initialization
       const savedTabs = localStorage.getItem("modalTabs");
       const savedActiveTab = localStorage.getItem("activeModalTab");
       let modalTabs: Array<{ key: string; label: string }> = [];
@@ -486,15 +513,14 @@ const Header: React.FC = () => {
             : [];
         } catch {}
       }
-      updateState({
+      setState((prev) => ({
+        ...prev,
         modalTabs,
         activeModalTab: savedActiveTab || "",
         showModal: modalTabs.length > 0,
-      });
+      }));
     }
-    (window as unknown as { onCloseTab?: (key: string) => void }).onCloseTab =
-      handleCloseTab;
-  }, [handleCloseTab, i18n]);
+  }, [handleCloseTab, i18n, t]);
 
   useEffect(() => {
     if (state.isMounted) {
@@ -511,7 +537,7 @@ const Header: React.FC = () => {
         label: t(`Header.${TAB_CONFIG[tab.key]?.label || tab.key}`),
       })),
     }));
-  }, [i18n.language]);
+  }, [i18n.language, t]);
 
   return (
     <header
@@ -524,25 +550,36 @@ const Header: React.FC = () => {
             : "0 0 15px 2px #758696",
       }}
     >
-      <div
-        className="flex items-center relative"
-        onMouseEnter={() => {
-          clearTimeout(menuTimeoutRef.current!);
-          updateState({ showMegaMenu: true });
-        }}
-        onMouseLeave={() => {
-          menuTimeoutRef.current = setTimeout(
-            () => updateState({ showMegaMenu: false }),
-            200
-          );
-        }}
-      >
-        <FiMenu
-          size={22}
-          className={`${
-            mounted && theme === "dark" ? "text-gray-300" : "text-gray-700"
-          } cursor-pointer`}
-        />
+      <div className="flex items-center">
+        {/* Icon menu */}
+        <div
+          className="relative"
+          onMouseEnter={() => {
+            clearTimeout(menuTimeoutRef.current!);
+            setState((prev) => ({ ...prev, showMegaMenu: true }));
+          }}
+          onMouseLeave={() => {
+            menuTimeoutRef.current = setTimeout(
+              () => setState((prev) => ({ ...prev, showMegaMenu: false })),
+              200
+            );
+          }}
+        >
+          <FiMenu
+            size={22}
+            className={`${
+              mounted && theme === "dark" ? "text-gray-300" : "text-gray-700"
+            } cursor-pointer`}
+          />
+          {state.showMegaMenu && (
+            <MegaMenu
+              onSubmenuClick={handleSubmenuClick}
+              isClosing={state.isMegaMenuClosing}
+            />
+          )}
+        </div>
+
+        {/* Logo */}
         <span
           className={`ml-5 text-lg font-mono font-bold tracking-wide select-none ${
             mounted && theme === "dark" ? "text-gray-100" : "text-gray-800"
@@ -551,13 +588,6 @@ const Header: React.FC = () => {
         >
           MSYSTEM
         </span>
-        {state.showMegaMenu && (
-          <MegaMenu
-            onSubmenuClick={handleSubmenuClick}
-            isClosing={state.isMegaMenuClosing}
-            theme={theme}
-          />
-        )}
       </div>
 
       <div className="flex items-center gap-4">
@@ -569,7 +599,11 @@ const Header: React.FC = () => {
               : "text-gray-700 hover:text-gray-900"
           } cursor-pointer transition-colors`}
           onClick={() =>
-            updateState({ showBellModal: true, isBellModalClosing: false })
+            setState((prev) => ({
+              ...prev,
+              showBellModal: true,
+              isBellModalClosing: false,
+            }))
           }
         />
         <span
@@ -598,11 +632,18 @@ const Header: React.FC = () => {
 
         <div className="relative" ref={dropdownRef}>
           {state.isMounted && state.currentLang && (
-            <img
+            <Image
               src={state.currentLang.icon}
               alt={state.currentLang.label}
-              className="w-6 h-6 cursor-pointer hover:opacity-80 transition-opacity"
-              onClick={() => updateState({ showDropdown: !state.showDropdown })}
+              width={24}
+              height={24}
+              className="cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() =>
+                setState((prev) => ({
+                  ...prev,
+                  showDropdown: !prev.showDropdown,
+                }))
+              }
             />
           )}
           {state.showDropdown && state.isMounted && (
@@ -613,12 +654,21 @@ const Header: React.FC = () => {
                   <button
                     className="flex items-center gap-2 w-full px-4 py-2 hover:bg-gray-100"
                     onClick={() => {
-                      updateState({ currentLang: lang, showDropdown: false });
+                      setState((prev) => ({
+                        ...prev,
+                        currentLang: lang,
+                        showDropdown: false,
+                      }));
                       localStorage.setItem("selectedLang", lang.key);
                       i18n.changeLanguage(lang.key);
                     }}
                   >
-                    <img src={lang.icon} alt={lang.label} className="w-6 h-6" />
+                    <Image
+                      src={lang.icon}
+                      alt={lang.label}
+                      width={24}
+                      height={24}
+                    />
                     <span className="text-black">{lang.label}</span>
                   </button>
                 </React.Fragment>
@@ -670,9 +720,16 @@ const Header: React.FC = () => {
         <FullPageModal
           tabs={state.modalTabs}
           activeTab={state.activeModalTab}
-          onTabChange={(key) => updateState({ activeModalTab: key })}
+          onTabChange={(key) =>
+            setState((prev) => ({ ...prev, activeModalTab: key }))
+          }
           onClose={() =>
-            updateState({ showModal: false, modalTabs: [], activeModalTab: "" })
+            setState((prev) => ({
+              ...prev,
+              showModal: false,
+              modalTabs: [],
+              activeModalTab: "",
+            }))
           }
         >
           <div className="min-h-[400px]">
@@ -685,7 +742,9 @@ const Header: React.FC = () => {
       {state.showTransactionReport && (
         <TransactionReport
           isOpen={state.showTransactionReport}
-          onClose={() => updateState({ showTransactionReport: false })}
+          onClose={() =>
+            setState((prev) => ({ ...prev, showTransactionReport: false }))
+          }
           theme={theme || "light"}
         />
       )}
@@ -693,7 +752,9 @@ const Header: React.FC = () => {
       {state.showDepositWithdrawReport && (
         <DepositWithdrawReport
           isOpen={state.showDepositWithdrawReport}
-          onClose={() => updateState({ showDepositWithdrawReport: false })}
+          onClose={() =>
+            setState((prev) => ({ ...prev, showDepositWithdrawReport: false }))
+          }
           theme={theme || "light"}
         />
       )}
@@ -701,7 +762,12 @@ const Header: React.FC = () => {
       {state.showCustomerStatementReport && (
         <CustomerStatementReport
           isOpen={state.showCustomerStatementReport}
-          onClose={() => updateState({ showCustomerStatementReport: false })}
+          onClose={() =>
+            setState((prev) => ({
+              ...prev,
+              showCustomerStatementReport: false,
+            }))
+          }
           theme={theme || "light"}
         />
       )}
@@ -710,20 +776,26 @@ const Header: React.FC = () => {
         <BellModal
           isClosing={state.isBellModalClosing}
           activeTab={state.activeTab}
-          onTabChange={(idx: number) => updateState({ activeTab: idx })}
+          onTabChange={(idx: number) =>
+            setState((prev) => ({ ...prev, activeTab: idx }))
+          }
           onClose={() => {
-            updateState({ isBellModalClosing: true, showBellModal: false });
+            setState((prev) => ({
+              ...prev,
+              isBellModalClosing: true,
+              showBellModal: false,
+            }));
             setTimeout(
               () =>
-                updateState({
+                setState((prev) => ({
+                  ...prev,
                   isBellModalClosing: false,
-                }),
+                })),
               300
             );
           }}
           tabRefs={tabRefs}
           indicatorStyle={indicatorStyle}
-          theme={theme}
         />
       )}
     </header>

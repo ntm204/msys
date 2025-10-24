@@ -16,32 +16,20 @@ const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
         toastOptions={{
           duration: 3000,
           style: {
-            background: "#363636",
-            color: "#fff",
+            background: "#fff",
+            color: "#374151",
+            borderRadius: "12px",
+            boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+            fontWeight: 500,
+            fontSize: "16px",
+            padding: "12px 20px",
             whiteSpace: "nowrap",
             overflowX: "auto",
             textOverflow: "ellipsis",
             maxWidth: "90vw",
-          },
-          success: {
-            duration: 3000,
-            style: {
-              background: "#10B981",
-              whiteSpace: "nowrap",
-              overflowX: "auto",
-              textOverflow: "ellipsis",
-              maxWidth: "90vw",
-            },
-          },
-          error: {
-            duration: 4000,
-            style: {
-              background: "#EF4444",
-              whiteSpace: "nowrap",
-              overflowX: "auto",
-              textOverflow: "ellipsis",
-              maxWidth: "90vw",
-            },
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
           },
         }}
       />

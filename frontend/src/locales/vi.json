@@ -34,7 +34,6 @@
   },
   "PriceBoard": {
     "Bảng giá": "Bảng giá",
-    "New tab": "Tab mới",
     "Add new tab": "Thêm tab mới",
     "Enter contract code...": "Nhập mã hợp đồng...",
     "Edit tab name": "Sửa tên tab",
@@ -51,7 +50,24 @@
     "Are you sure you want to delete this tab?": "Bạn có chắc chắn muốn xóa tab này không?",
     "This action cannot be undone.": "Hành động này không thể hoàn tác.",
     "Yes, delete": "Có, xóa",
-    "No, cancel": "Không, hủy"
+    "No, cancel": "Không, hủy",
+    "KL chào mua": "KL chào mua",
+    "Mã HD": "Mã HD",
+    "Position": "Vị thế",
+    "Giá khớp": "Giá khớp",
+    "Giá chào bán": "Giá chào bán",
+    "Chờ mua": "Chờ mua",
+    "KL chào bán": "KL chào bán",
+    "Open": "Mở cửa",
+    "High": "Cao nhất",
+    "Low": "Thấp nhất",
+    "Close": "Đóng cửa",
+    "Thay đổi": "Thay đổi",
+    "Prev. Close": "Đóng cửa trước",
+    "KL khớp": "KL khớp",
+    "Bước giá tối thiểu": "Bước giá tối thiểu",
+    "Giá hợp đồng": "Giá hợp đồng",
+    "Ngày giờ cập nhật gần nhất": "Ngày giờ cập nhật gần nhất"
   },
   "AccountDetail": {
     "Chi tiết tài khoản": "Chi tiết tài khoản"

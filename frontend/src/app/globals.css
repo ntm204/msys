@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FAFAFA;
+  --background: #fafafa;
   --foreground: #171717;
   --primary: #3b82f6;
   --primary-hover: #2563eb;
@@ -102,4 +102,56 @@ body {
 }
 .animate-bell-modal-out {
   animation: bell-modal-out 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Column resize cursor styles */
+.cursor-col-resize {
+  cursor: col-resize;
+}
+
+/* Prevent text selection during column resize */
+.column-resizing {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Drag & drop placeholder styling */
+.sortable-placeholder {
+  background-color: rgba(59, 130, 246, 0.1);
+  border: 2px dashed rgba(59, 130, 246, 0.5);
+}
+
+/* Column header transitions */
+.column-transition {
+  transition: width 0.2s ease-out;
+}
+
+/* Drag handle styles */
+.cursor-grab {
+  cursor: grab;
+}
+
+.cursor-grabbing {
+  cursor: grabbing;
+}
+
+/* Column header hover effects */
+.column-header-hover {
+  transition: box-shadow 0.2s ease, transform 0.1s ease;
+}
+
+.column-header-hover:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Resize handle styles */
+.resize-handle {
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.resize-handle:hover {
+  opacity: 1 !important;
 }

@@ -10,15 +10,14 @@ interface FullPageModalProps {
   children: React.ReactNode;
 }
 
-// Định nghĩa type cho window.onCloseTab
 declare global {
   interface Window {
     onCloseTab?: (key: string) => void;
   }
 }
 
-const HEADER_HEIGHT = 50; // px
-const MODAL_HEADER_OFFSET = 10; // px
+const HEADER_HEIGHT = 50;
+const MODAL_HEADER_OFFSET = 10;
 
 const FullPageModal: React.FC<FullPageModalProps> = ({
   tabs,
@@ -102,11 +101,10 @@ const FullPageModal: React.FC<FullPageModalProps> = ({
                 aria-label="Đóng tab"
                 onClick={(e) => {
                   e.stopPropagation();
-                  // Chỉ còn 1 tab thì đóng cả modal
+                  
                   if (tabs.length === 1) {
                     onClose();
                   } else {
-                    // Còn nhiều hơn 1 tab thì chỉ đóng tab này
                     if (typeof window !== "undefined") {
                       if (typeof window.onCloseTab === "function") {
                         window.onCloseTab(tab.key);

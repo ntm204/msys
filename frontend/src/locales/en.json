@@ -34,7 +34,6 @@
   },
   "PriceBoard": {
     "Bảng giá": "Price Board",
-    "New tab": "New tab",
     "Add new tab": "Add new tab",
     "Enter contract code...": "Enter contract code...",
     "Edit tab name": "Edit tab name",
@@ -51,7 +50,24 @@
     "Are you sure you want to delete this tab?": "Are you sure you want to delete this tab?",
     "This action cannot be undone.": "This action cannot be undone.",
     "Yes, delete": "Yes, delete",
-    "No, cancel": "No, cancel"
+    "No, cancel": "No, cancel",
+    "KL chào mua": "Bid Qty",
+    "Mã HD": "Code",
+    "Position": "Position",
+    "Giá khớp": "Match Price",
+    "Giá chào bán": "Ask Price",
+    "Chờ mua": "Pending Buy",
+    "KL chào bán": "Ask Qty",
+    "Open": "Open",
+    "High": "High",
+    "Low": "Low",
+    "Close": "Close",
+    "Thay đổi": "Change",
+    "Prev. Close": "Prev. Close",
+    "KL khớp": "Volume",
+    "Bước giá tối thiểu": "Min Step Price",
+    "Giá hợp đồng": "Contract Price",
+    "Ngày giờ cập nhật gần nhất": "Last Update Time"
   },
   "AccountDetail": {
     "Chi tiết tài khoản": "Account Details"
